@@ -6,15 +6,15 @@ module RPS
       if player # create a session
         # validate password
         if player.has_password?(params[:password])
-          # WIP
-          # session = RPS.db.create('sessions', {:session_id => ???, :player_id => player.id})
+          session_id = SecureRandom.base64
+          session = RPS.db.create('sessions', {:session_id => session_id, :player_id => player.id})
 
-          { :success? => true, :session_id => session_id }
+          { :success? => true, :session_id => session_id, :player => player }
         else
           { :success? => false, :error => :invalid_password }
         end
       else # return a error
-
+        { :success? => false, :error => :invalid_username }
       end
     end
   end
