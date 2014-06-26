@@ -1,6 +1,3 @@
-require 'pg'
-require 'time'
-
 module RPS
   class DB
     def initialize(dbname = 'rps')
@@ -15,7 +12,7 @@ module RPS
           id serial NOT NULL PRIMARY KEY,
           username text NOT NULL UNIQUE,
           name text,
-          hash_pw text NOT NULL
+          pwd text NOT NULL
         )])
 
       @conn.exec(%Q[
@@ -109,10 +106,24 @@ module RPS
 
     private
 
+    def klass(sklass)
+      {
+        'sessions' => RPS::Session,
+        'players'  => RPS::Player,
+        'matches'  => RPS::Match,
+        'games'    => RPS::Game,
+        'moves'    => RPS::Move
+      }[sklass]
+    end
+
     def execute_the(command, sklass)
       results = @conn.exec(command)
 
-      parse_the(results)
+      parsed_results = parse_the(results)
+
+      parsed_results.map do |obj_hash|
+        klass(sklass).send(:new, obj_hash)
+      end
     end
 
     def parse_the(results)

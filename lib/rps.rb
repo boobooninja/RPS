@@ -1,6 +1,10 @@
 module RPS
 end
 
+require 'digest'
+require 'time'
+require 'pg'
+
 require_relative 'rps/db.rb'
 require_relative 'rps/session.rb'
 require_relative 'rps/move.rb'
