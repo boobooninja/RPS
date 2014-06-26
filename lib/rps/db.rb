@@ -19,7 +19,8 @@ module RPS
         CREATE TABLE IF NOT EXISTS sessions(
           id serial NOT NULL PRIMARY KEY,
           session_id text NOT NULL UNIQUE,
-          player_id integer REFERENCES players(id)
+          player_id integer REFERENCES players(id),
+          started_at timestamp NOT NULL DEFAULT current_timestamp,
         )])
 
       @conn.exec(%Q[

@@ -1,19 +1,41 @@
 # required gem includes
 require 'sinatra'
 require "sinatra/json"
-require "pry"
 
 # require file includes
-# require_relative 'lib/myapp.rb'
-# require_relative 'lib/task-manager.rb'
+require_relative 'lib/rps.rb'
 
 set :bind, '0.0.0.0' # Vagrant fix
 set :port, 9494
 
 
-# get '/' do
-#   erb :jokes
-# end
+get '/' do
+  result = RPS::ValidateSession.run(:session_id => params[:session_id])
+  if result[:success?]
+    @player = result[:player]
+    erb :main
+  else
+    @error = result[:error]
+    erb :signin
+  end
+end
+
+get '/signin' do
+  result = RPS::ValidateSession.run(:session_id => params[:session_id])
+  if result[:success?]
+    @player = result[:player]
+    erb :main
+  else
+    result = RPS::SignIn.run(:username => params[:username], :password => params[:password])
+    if result[:success?]
+      @player = result[:player]
+      erb :main
+    else
+      @error = result[:error]
+      erb :signin
+    end
+  end
+end
 
 # get '/employees' do
 #   @employees = TM.db.find('employees', {})
