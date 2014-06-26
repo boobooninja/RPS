@@ -26,10 +26,15 @@ module RPS
       @conn.exec(%Q[
         CREATE TABLE IF NOT EXISTS matches(
           id serial NOT NULL PRIMARY KEY,
-          player_1_id integer REFERENCES players(id),
-          player_2_id integer REFERENCES players(id),
           started_at timestamp NOT NULL DEFAULT current_timestamp,
           completed_at timestamp
+        )])
+
+      @conn.exec(%Q[
+        CREATE TABLE IF NOT EXISTS playermatches(
+          id serial NOT NULL PRIMARY KEY,
+          match_id integer REFERENCES match(id),
+          player_id integer REFERENCES player(id),
         )])
 
       @conn.exec(%Q[
@@ -159,6 +164,7 @@ module RPS
     def drop_tables
       @conn.exec(%Q[ DROP TABLE IF EXISTS moves CASCADE; ])
       @conn.exec(%Q[ DROP TABLE IF EXISTS games CASCADE; ])
+      @conn.exec(%Q[ DROP TABLE IF EXISTS playermatches CASCADE; ])
       @conn.exec(%Q[ DROP TABLE IF EXISTS matches CASCADE; ])
       @conn.exec(%Q[ DROP TABLE IF EXISTS sessions CASCADE; ])
       @conn.exec(%Q[ DROP TABLE IF EXISTS players CASCADE; ])
