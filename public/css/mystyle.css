@@ -1,0 +1,33 @@
+/** {
+  border: 2px solid red;
+}
+*/
+#footer {
+  background-color: black;
+  color: white;
+}
+
+.employees {
+  /*background-color: grey;*/
+}
+
+table {
+  /*border: 2px solid red;*/
+  width: 100%;
+}
+
+.id {
+  /*width: 20%;*/
+}
+.name {
+  /*width: 20%;*/
+}
+
+.list-values {
+  width: 100px;
+  background-color: white;
+}
+
+li {
+  list-style-type: none;
+}
