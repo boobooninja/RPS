@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ROCK PAPER SCISSORS EXTREME!</title>
+    <link rel="stylesheet" href="/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="/css/mystyle.css" type="text/css" />
+  </head>
+  <body>
+    <%= erb :_header %>
+    <div class="row">
+      <div class="large-12 columns">
+        <%= yield %>
+      </div>
+    </div>
+    <%= erb :_footer %>
+    <script type="text/javascript" src="/js/vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/foundation.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/foundation.init.js"></script>
+    <script type="text/javascript" src="/js/vendor/underscore.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/controllers/business-logic.js"></script>
+    <script type="text/javascript" src="/js/presenters/ui-logic.js"></script>
+  </body>
+</html>
