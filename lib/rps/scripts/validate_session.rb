@@ -1,13 +1,18 @@
 module RPS
   class ValidateSession
-    def self.run(params) # :session_id => "session_id"
-      # check to see if session is valid
-      session = RPS.db.find('sessions', {:session_id => params[:session_id]}).first
+    def self.run(params)
+      rps_session_id = params[:rps_session_id]
 
-      if session # get player
-        player = RPS.db.find('players',{:player_id => session.player_id})
-        { :success? => true, :player => player, :errors => [] }
-      else # return a error
+      if rps_session_id
+        session = RPS.db.find('sessions', {:session_id => rps_session_id}).first
+
+        if session # get player
+          player = RPS.db.find('players',{:player_id => session.player_id})
+          { :success? => true, :player => player, :errors => [] }
+        else # return a error
+          { :success? => false, :errors => ['invalid session'] }
+        end
+      else
         { :success? => false, :errors => ['invalid session'] }
       end
     end
