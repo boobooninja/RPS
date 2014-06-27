@@ -8,13 +8,14 @@
   </head>
   <body>
 
-    <%= erb :_head %>
+    <%= erb :_header %>
     <div class="row panel">
       <div class="large-12 columns">
         <%= yield %>
       </div>
     </div>
-    <%= erb :_foot %>
+    <%= erb :_footer %>
+    <%= erb :_modals %>
 
     <script type="text/javascript" src="/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="/js/vendor/foundation.min.js"></script>

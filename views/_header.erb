@@ -1,14 +1,14 @@
 <div class="row panel header">
-    <div class="columns large-2 medium-3 small-5 logo">RPS Extreme!!!</div>
-    <div class="columns large-3 large-offset 7 medium-4 medium-offset-5 small-6 small-offset-1">
+    <div class="columns large-4 medium-5 small-6 logo"><h4>RPS Extreme!!!</h4></div>
+    <div class="columns large-4 large-offset-4 medium-5 medium-offset-2 small-6">
         <%if @player%>
-            <h3>
+            <h4 class="text-right">
                 <a href="/stats/<%=@player.username%>"><%=@player.username%></a>  :  <a href="/logout/<%=@player.username%>">Log Out</a>
-            </h3>
+            </h4>
         <%else%>
-            <h3>
+            <h4 class="text-right">
                 <a href="#" data-reveal-id="signUpModal">Sign Up</a>  :  <a href="#" data-reveal-id="loginModal">Login</a>
-            </h3>
+            </h4>
         <%end%>
     </div>
 </div>

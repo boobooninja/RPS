@@ -1,19 +1,24 @@
-<div id="loginModal" class="medium">
-    <form autocomplete="on">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" name="Submit">
-    </form>
+<div id="loginModal" class="tiny reveal-modal" data-reveal>
+    <div class="row panel">
+        <form autocomplete="on">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <button type="submit" name="submit" class="button radius expand">Submit</button>
+        </form>
+    </div>
 </div>
 
-<div id="signUpModal" class="large">
-    <form autocomplete="on" autocorrect="on" autocapitalize="off">
-        <input type="text" name="FirstName" placeholder="First Name" required autofocus>
-        <input type="text" name="LastName" placeholder="Last Name" required>
-        <input type="email" name="Email" placeholder="Email Address" required autocapitalize="off">
-        <input type="text" name="username" placeholder="Username" required autocapitalize="off" autocorrect="off">
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="text" name="password" placeholder="Retype Password" required>
-        <input type="submit" name="Submit">
-    </form>
+<div id="signUpModal" class="small reveal-modal" data-reveal>
+    <div class="row panel">
+        <form autocomplete="on" autocorrect="on" autocapitalize="off">
+            <input type="text" name="FirstName" placeholder="First Name" required autofocus>
+            <input type="text" name="LastName" placeholder="Last Name" required>
+            <input type="email" name="Email" placeholder="Email Address" required autocapitalize="off">
+            <input type="text" name="username" placeholder="Username" required autocapitalize="off" autocorrect="off">
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="password2" placeholder="Retype Password" required>
+            <button type="submit" name="submit" class="button radius expand">Submit</button>
+            <!-- Add a jquery function to disable submit buttons if passwords don't match -->
+        </form>
+    </div>
 </div>
