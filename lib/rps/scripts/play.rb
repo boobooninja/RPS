@@ -9,7 +9,8 @@ module RPS
       return_hash = { :player => player, :errors => [] }
 
       # get matches
-      matches = RPS.db.find('matches, playermatches',{'player_id' => player.id})
+      matches = player.matches
+      # matches = RPS.db.find('matches, playermatches',{'player_id' => player.id})
 
       # get match
       matches.each do |m|
@@ -18,8 +19,19 @@ module RPS
 
       if match
         return_hash[:match] = match
+
+        # get opponent
+        match.players.each do |p|
+          opponent = p if p.player_id != player.id
+        end
+
+        if opponent
+          return_hash[:opponent] = opponent
+        end
+
         # get games
-        games = RPS.db.find('games',{'match_id' => match.id})
+        games = match.games
+        # games = RPS.db.find('games',{'match_id' => match.id})
 
         # get game
         games.each do |g|
@@ -29,48 +41,52 @@ module RPS
         if game
           return_hash[:game] = game
           # get moves
-          moves = RPS.db.find('moves',{'game_id' => game.id})
+          # moves = game.moves
+          # moves = RPS.db.find('moves',{'game_id' => game.id})
 
-          if moves.nil?
+          players_moves   = player.moves_for_game(game.id)
+          opponents_moves = opponent.moves_for_game(game_id)
+
+          if players_moves.empty?
             # create move
             return_hash = create_move(game, player, action, return_hash)
-          elsif moves.count == 1
-            if moves.first.player_id != player.id
-              other_players_move = moves.first
-              # create move
-              return_hash = create_move(game, player, action, return_hash)
-              if return_hash[:success?]
-                # check winner
-                this_players_move = return_hash[:move]
-                score = check_winner(this_players_move, other_players_move)
-# TODO
-                # update game
-                game = RPS.db.update('games', ['game_id', game.id], {'completed_at' => Time.now}).first
-                if game
+
+            if return_hash[:success?]
+              # update game
+              game = RPS.db.update('games', ['game_id', game.id], {'completed_at' => Time.now}).first
+              if game
                 return_hash[:game] = game
-                  # check if match is over
-                  # TODO
-                else
-                  return_hash[:errors].push('unable to update game')
+                # check winner
+                games = RPS.db.find('games',{'match_id' => match.id})
+                return_hash = get_score_for(games, player, opponent, return_hash)
+
+                # check if match is over
+                if return_hash[:winner]
+                  match = RPS.db.update('match', ['match_id', match.id], {'completed_at' => Time.now})
+                  return_hash[:match] = match
                 end
+                return_hash
+              else
+                return_hash[:errors].push('unable to update game')
               end
-              return_hash
             else
-              return_hash[:success?] = false
-              return_hash[:errors  ].push('you already made your move')
-              return_hash
+              return_hash[:errors].push('unable to create move')
             end
-          elsif moves.count == 2
-            return_hash[:success?] = false
-            return_hash[:errors  ].push('this game is already over')
-            return_hash
+          else
+            # error you already made your move
+            return_hash[:errors].push('you already made a move')
           end
         else # return a error
           return_hash[:success?] = false
           return_hash[:errors  ].push('invalid game')
-          return_hash
         end
+      else
+        # invalid match
+        return_hash[:success?] = false
+        return_hash[:errors  ].push('invalid match')
       end
+
+      return_hash
     end
 
     private
@@ -88,22 +104,33 @@ module RPS
       end
     end
 
-    def self.check_winner(this_players_move, other_players_move)
-      result = this_players_move.wins?(other_players_move)
-# check if match is over
-# match number
-# we need to know who won
-# each players score
-# game number
-# create and return new game
-# { :success? => true, :player => player, :game => game, :errors => ['you already made your move'] }
-      if result == true
+    def self.get_score_for(games,player, opponent, return_hash)
+      player_score   = 0
+      opponent_score = 0
 
-      elsif result == false
-
-      elsif result == :tie
-
+      games.each do |game|
+        games.moves.each do |move|
+          player_move = move if move.player_id == player.id
+          opponent_move = move if move.player_id == opponent.id
+        end
+        result = player_move.wins?(opponent_move)
+        if result = true
+          player_score += 1
+        elsif result = false
+          opponent_score += 1
+        end
       end
+
+      player.score= player_score
+      opponent.score= opponent_score
+      if player_score >= 3 && player_score > opponent_score
+        return_hash[:winner] = player
+      elsif opponent_score >= 3 && opponent_score > player_score
+        return_hash[:winner] = opponent
+      end
+      return_hash[:player  ] = player
+      return_hash[:opponent] = opponent
+      return_hash
     end
   end
 end

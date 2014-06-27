@@ -12,5 +12,9 @@ module RPS
     def completed?
       @completed_at.nil? != nil
     end
+
+    def moves
+      @moves ||= TM.db.find('moves', {'game_id' => @game_id})
+    end
   end
 end

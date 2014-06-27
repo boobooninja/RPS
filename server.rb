@@ -70,6 +70,18 @@ get '/login' do
     @player = result[:player]
     erb :home
   else
+    erb :login
+  end
+end
+
+post '/login' do
+  result = RPS::ValidateSession.run(params)
+  @errors = result[:errors]
+
+  if result[:success?]
+    @player = result[:player]
+    erb :home
+  else
     result = RPS::SignIn.run(params)
     @errors.push(result[:errors]).flatten
 
@@ -95,15 +107,95 @@ get '/signout' do
   end
 end
 
-get '/match/:match_id/game/:game_id' do
+# TODO make api method
+# get '/players/:player_id/matches' do
+#   result = RPS::ValidateSession.run(params)
+#   @errors = result[:errors]
+
+#   if result[:success?]
+#     @player  = result[:player]
+#     @matches = @player.matches
+
+#     erb :matches
+#   else
+#     erb :main
+#   end
+# end
+
+# TODO make api method
+# TODO '/players/:player_id/matches'
+# post '/matches' do
+#   result = RPS::ValidateSession.run(params)
+#   @errors = result[:errors]
+
+#   if result[:success?]
+#     @player = result[:player]
+#     result  = RPS::CreateMatch.run(params)
+#     @errors.push(result[:errors]).flatten
+
+#     if result[:success?]
+#       @match = result[:match]
+
+#       erb :match
+#     else
+#       erb :matches
+#     end
+#   else
+#     erb :matches
+#   end
+# end
+
+# TODO make api method (games with moves 'history')
+# get '/matches/:match_id/games' do |match_id|
+#   result = RPS::ValidateSession.run(params)
+#   @errors = result[:errors]
+
+#   if result[:success?]
+#     @player = result[:player]
+#     @match  = @player.get_match(match_id)
+#     @games  = @match.games
+
+#     erb :games
+#   else
+#     erb :home
+#   end
+# end
+
+get '/matches/:match_id/games/:game_id' do |match_id,game_id|
   result = RPS::ValidateSession.run(params)
   @errors = result[:errors]
 
   if result[:success?]
-    @player   = result[:player]
-    # @opponent = nil
-    @match  = RPS.db.find('matches, playermatches',{:player_id => @player.id, :completed_at => null}).first
-    @game   = RPS.db.find('games, moves',{:match_id => @match.id}).first
+    @player = result[:player]
+    @match  = @player.get_match(match_id)
+    @game   = @match.get_game(game_id)
+
+    erb :game
+  else
+    erb :games
+  end
+end
+
+post '/matches/:match_id/games/:game_id' do |match_id,game_id|
+  result = RPS::ValidateSession.run(params)
+  @errors = result[:errors]
+
+  if result[:success?]
+# TODO refactor
+# get player, match, game like method above then
+# have a simple Play script that takes those and
+# validates the play
+    result = RPS::Play.run(params)
+    @errors.push(result[:errors]).flatten
+
+    if result[:success]
+      @player   = result[:player]
+      @opponent = result[:opponent]
+      @match    = result[:match]
+      @game     = result[:game]
+      @winner   = result[:winner]
+    end
+
     erb :game
   else
     erb :login
@@ -111,6 +203,66 @@ get '/match/:match_id/game/:game_id' do
 end
 
 #-------- JSON API routes -----------
+
+get '/api/players/:player_id/matches' do |player_id|
+  result = RPS::ValidateSession.run(params)
+  @errors = result[:errors]
+
+  matches_array = []
+  json_hash = {:matches => matches_array, :errors => @errors}
+
+  if result[:success?]
+    @player  = result[:player]
+    @matches = @player.matches
+
+    @matches.each do |match|
+      matches_array.push( match.to_json_hash )
+    end
+  end
+
+  JSON(json_hash)
+end
+
+# TODO make api method
+# TODO '/players/:player_id/matches'
+# post '/matches' do
+#   result = RPS::ValidateSession.run(params)
+#   @errors = result[:errors]
+
+#   if result[:success?]
+#     @player = result[:player]
+#     result  = RPS::CreateMatch.run(params)
+#     @errors.push(result[:errors]).flatten
+
+#     if result[:success?]
+#       @match = result[:match]
+
+#       erb :match
+#     else
+#       erb :matches
+#     end
+#   else
+#     erb :matches
+#   end
+# end
+
+# TODO make api method (games with moves 'history')
+# get '/matches/:match_id/games' do |match_id|
+#   result = RPS::ValidateSession.run(params)
+#   @errors = result[:errors]
+
+#   if result[:success?]
+#     @player = result[:player]
+#     @match  = @player.get_match(match_id)
+#     @games  = @match.games
+
+#     erb :games
+#   else
+#     erb :home
+#   end
+# end
+
+
 
 # post '/api/jokes/create' do
 #   original_jokes_length = @@jokes.count

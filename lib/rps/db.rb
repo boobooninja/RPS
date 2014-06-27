@@ -26,7 +26,7 @@ module RPS
       @conn.exec(%Q[
         CREATE TABLE IF NOT EXISTS matches(
           match_id serial NOT NULL PRIMARY KEY,
-          started_at timestamp NOT NULL DEFAULT current_timestamp,
+          started_at timestamp,
           completed_at timestamp
         );])
 
@@ -144,8 +144,16 @@ module RPS
         presult[:match_id    ] = presult[:match_id   ].to_i if presult[:match_id]
         presult[:game_id     ] = presult[:game_id    ].to_i if presult[:game_id]
         presult[:move_id     ] = presult[:move_id    ].to_i if presult[:move_id]
-        presult[:started_at  ] = Time.parse( presult[:started_at] ) if presult[:started_at]
-        presult[:completed_at] = Time.parse( presult[:completed_at] ) if presult[:completed_at]
+        if presult[:started_at] == :NULL
+          presult[:started_at] = nil
+        else
+          presult[:started_at] = Time.parse( presult[:started_at] )
+        end
+        if presult[:completed_at] == :NULL
+          presult[:completed_at] = nil
+        else
+          presult[:completed_at] = Time.parse( presult[:completed_at] )
+        end
 
         presults << presult
       end
