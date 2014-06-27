@@ -113,13 +113,14 @@ module RPS
     private
 
     def klass(sklass)
+      this_klass = sklass.split(',').first
       {
         'sessions' => RPS::Session,
         'players'  => RPS::Player,
         'matches'  => RPS::Match,
         'games'    => RPS::Game,
         'moves'    => RPS::Move
-      }[sklass]
+      }[this_klass]
     end
 
     def execute_the(command, sklass)

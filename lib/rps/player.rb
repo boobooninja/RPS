@@ -1,12 +1,12 @@
 module RPS
   class Player
-    attr_reader :id, :name, :username, :pwd
+    attr_reader :player_id, :name, :username, :pwd
 
     def initialize(args)
-      @id       = args[:id]
-      @name     = args[:name]
-      @username = args[:username]
-      @pwd      = args[:pwd]
+      @player_id = args[:player_id]
+      @name      = args[:name]
+      @username  = args[:username]
+      @pwd       = args[:pwd]
     end
 
     def update_password(password)

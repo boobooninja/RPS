@@ -1,9 +1,9 @@
 module RPS
   class Game
-    attr_reader :id, :match_id, :started_at, :completed_at
+    attr_reader :game_id, :match_id, :started_at, :completed_at
 
     def initialize(args)
-      @id           = args[:id]
+      @game_id      = args[:game_id]
       @match_id     = args[:match_id]
       @started_at   = args[:started_at]
       @completed_at = args[:completed_at]
