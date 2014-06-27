@@ -9,9 +9,9 @@ module RPS
                                                           :game_id => params[:game_id]}).first
 
       if game
-        { :success? => true, :game => game }
+        { :success? => true, :game => game, :errors => [] }
       else # return a error
-        { :success? => false, :error => :invalid_game }
+        { :success? => false, :errors => ['invalid game'] }
       end
     end
   end

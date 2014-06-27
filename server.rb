@@ -12,6 +12,8 @@ set :port, 9494
 
 get '/' do
   result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  @errors = result[:errors]
+
   if result[:success?]
     @player = result[:player]
     erb :home
@@ -22,6 +24,8 @@ end
 
 get '/signup' do
   result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  @errors = result[:errors]
+
   if result[:success?]
     @player = result[:player]
     erb :home
@@ -30,19 +34,51 @@ get '/signup' do
   end
 end
 
+post '/signup' do
+  result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  @errors = result[:errors]
+
+  if result[:success?]
+    @errors.push('Please logout first before signing up')
+    @player = result[:player]
+    erb :home
+  else
+    result = RPS::SignUp.run(:name = params[:name], :username => params[:username], :password => params[:password])
+    @errors.push(result[:errors]).flatten
+
+    if result[:success?]
+      result = RPS::SignIn.run(:username => params[:username], :password => params[:password])
+      @errors.push(result[:errors]).flatten
+
+      if result[:success?]
+        session[:session_id] = result[:session_id]
+        @player = result[:player]
+        erb :home
+      else
+        erb :login
+      end
+    else
+      erb :login
+    end
+  end
+end
+
 get '/login' do
   result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  @errors = result[:errors]
+
   if result[:success?]
     @player = result[:player]
     erb :home
   else
     result = RPS::SignIn.run(:username => params[:username], :password => params[:password])
+    @errors.push(result[:errors]).flatten
+
     if result[:success?]
       session[:session_id] = result[:session_id]
       @player = result[:player]
       erb :home
     else
-      @error = result[:error]
       erb :login
     end
   end
@@ -50,61 +86,31 @@ end
 
 get '/signout' do
   result = RPS::DeleteSession.run(:session_id => session[:session_id])
+  @errors = result[:errors]
+
   if result[:success?]
     session[:session_id] = nil
     erb :main
   else
-    @error = result[:error]
     erb :main
   end
 end
 
 get '/match/:match_id/game/:game_id' do
   result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  @errors = result[:errors]
+
   if result[:success?]
     @player = result[:player]
     @match  = RPS.db.find('matches, playermatches',{:player_id => @player.id, :completed_at => null}).first
     @games  = RPS.db.find('games, moves',{:match_id => @match.id})
     erb :game
   else
-    @error = result[:error]
     erb :login
   end
 end
 
-# get '/employees' do
-#   @employees = TM.db.find('employees', {})
-#   erb :employees
-# end
-
-
-# configure do
-#   jokesKlass = MyApp::Jokes.new
-#   @@jokes = jokesKlass.jokes
-# end
-
-# get '/' do
-#   # This goes in your <%= yield %> statement
-#   # seen in your main layout.erb file
-#   @im_some_ruby_var = "Hey, this is a web app"
-#   erb :test # layout implied
-# end
-
-# get '/js-specs' do
-#   erb :specs, :layout => :spec
-# end
-
-# get '/jokes-js-ui' do
-#   erb :jokes
-# end
-
-
 #-------- JSON API routes -----------
-
-# # more info sinatra json: http://www.sinatrarb.com/contrib/json.html
-# get '/api/jokes' do
-#   json @@jokes
-# end
 
 # post '/api/jokes/create' do
 #   original_jokes_length = @@jokes.count
