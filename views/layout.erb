@@ -6,15 +6,18 @@
     <link rel="stylesheet" href="/css/style.css" type="text/css" />
     <link rel="stylesheet" href="/css/mystyle.css" type="text/css" />
   </head>
+
   <body>
+
     <%= erb :_header %>
-    <div class="row">
+    <div class="row panel">
       <div class="large-12 columns">
         <%= yield %>
       </div>
     </div>
     <%= erb :_footer %>
     <%= erb :_modals %>
+
     <script type="text/javascript" src="/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="/js/vendor/foundation.min.js"></script>
     <script type="text/javascript" src="/js/vendor/foundation.init.js"></script>
