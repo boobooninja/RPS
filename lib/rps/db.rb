@@ -110,6 +110,19 @@ module RPS
       execute_the(command, sklass)
     end
 
+    def create_playermatches(sklass,args)
+      keys   = args.keys.join(", ")
+      values = args.values.map { |s| "'#{s}'" }.join(', ')
+
+      command = %Q[ INSERT INTO #{sklass} (#{keys})
+                    VALUES (#{values})
+                    returning *; ]
+
+      results = @conn.exec(command)
+
+      parsed_results = parse_the(results)
+    end
+
     private
 
     def klass(sklass)

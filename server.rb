@@ -58,23 +58,11 @@ post '/login' do
     @player = result[:player]
     erb :home
   else
-    erb :login
-  end
-end
-
-post '/login' do
-  result = RPS::ValidateSession.run(params)
-  @errors = result[:errors]
-
-  if result[:success?]
-    @player = result[:player]
-    erb :home
-  else
     result = RPS::SignIn.run(params)
     @errors.push(result[:errors]).flatten
 
     if result[:success?]
-      session[:session_id] = result[:session_id]
+      session[:rps_session_id] = result[:rps_session_id]
       @player = result[:player]
       erb :home
     else
@@ -83,12 +71,12 @@ post '/login' do
   end
 end
 
-get '/logout/:player_id' do
+get '/logout' do
   result = RPS::DeleteSession.run(params)
   @errors = result[:errors]
 
   if result[:success?]
-    session[:session_id] = nil
+    session[:rps_session_id] = nil
     erb :main
   else
     erb :main
@@ -211,28 +199,50 @@ get '/api/players/:player_id/matches' do |player_id|
   JSON(json_hash)
 end
 
-# TODO make api method
-# TODO '/players/:player_id/matches'
-# post '/matches' do
-#   result = RPS::ValidateSession.run(params)
-#   @errors = result[:errors]
+post '/players/:player_id/matches' do |player_id|
+  result = RPS::ValidateSession.run(params)
+  @errors = result[:errors]
+  json_hash = {:errors => @errors}
 
-#   if result[:success?]
-#     @player = result[:player]
-#     result  = RPS::CreateMatch.run(params)
-#     @errors.push(result[:errors]).flatten
+  if result[:success?]
+    @player = result[:player]
 
-#     if result[:success?]
-#       @match = result[:match]
+    result  = RPS::CreateMatch.run(params, @player)
+    @errors.push(result[:errors]).flatten
 
-#       erb :match
-#     else
-#       erb :matches
-#     end
-#   else
-#     erb :matches
-#   end
-# end
+    if result[:success?]
+      @match = result[:match]
+
+      json_hash[:match] = @match.to_json_hash
+    end
+  end
+
+  JSON(json_hash)
+end
+
+get '/matches/:match_id/history' do |match_id|
+  result = RPS::ValidateSession.run(params)
+  @errors = result[:errors]
+  json_hash = {:errors => @errors}
+
+  if result[:success?]
+    @player = result[:player]
+    @match  = @player.get_match(match_id)
+
+    if @match
+#TODO RPS::GetMatchHistory
+      result = RPS::GetMatchHistory(params, @match)
+      @errors.push(result[:errors]).flatten
+
+      if result[:success?]
+        json_hash[:success] = true
+        json_hash[:history] = result[:history]
+      end
+    end
+  end
+
+  JSON(json_hash)
+end
 
 # TODO make api method (games with moves 'history')
 # get '/matches/:match_id/games' do |match_id|
