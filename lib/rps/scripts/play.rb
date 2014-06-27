@@ -4,14 +4,14 @@ module RPS
       # check to see if player is associated with this game
       player = params[:player]
 
+      game = RPS.db.find('playermatches, matches, games',{:player_id => player.id,
+                                                          :completed_at => null,
+                                                          :game_id => params[:game_id]}).first
 
-      session = RPS.db.find('sessions', {:session_id => params[:session_id]})
-
-      if session # get player
-        player = RPS.db.find('players',{:id => session.player_id})
-        { :success? => true, :player => player }
+      if game
+        { :success? => true, :game => game, :errors => [] }
       else # return a error
-        { :success? => false, :error => :invalid_session }
+        { :success? => false, :errors => ['invalid game'] }
       end
     end
   end

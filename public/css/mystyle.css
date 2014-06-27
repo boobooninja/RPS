@@ -1,33 +1,37 @@
-/** {
-  border: 2px solid red;
-}
-*/
-#footer {
-  background-color: black;
-  color: white;
+.container {
+  height: 100%;
+  margin-top: 20%;
 }
 
-.employees {
-  /*background-color: grey;*/
+.my-box {
+  width: 80%;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  margin: 50px auto;
 }
 
-table {
-  /*border: 2px solid red;*/
-  width: 100%;
+div.panel {
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  width: 75%;
 }
 
-.id {
-  /*width: 20%;*/
-}
-.name {
-  /*width: 20%;*/
+.center {
+  text-align: center;
 }
 
-.list-values {
-  width: 100px;
-  background-color: white;
+#sign_up_button {
+  width: 33%;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
 }
 
-li {
-  list-style-type: none;
+@media all and (max-width: 64rem) {
+  .main {
+    max-width: 90%;
+  }
 }

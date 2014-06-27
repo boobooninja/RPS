@@ -1,0 +1,13 @@
+<% if @errors %>
+  <div class="row">
+    <div class="column">
+      <ul>
+        <% @errors.each do |error| %>
+          <li>
+            <span><%= error %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
