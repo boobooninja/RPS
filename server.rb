@@ -18,7 +18,7 @@ get '/' do
     @player = result[:player]
     erb :home
   else
-    erb :main
+    erb :index
   end
 end
 
@@ -43,7 +43,7 @@ post '/signup' do
     @player = result[:player]
     erb :home
   else
-    result = RPS::SignUp.run(:name = params[:name], :username => params[:username], :password => params[:password])
+    result = RPS::SignUp.run(:name => params[:name], :username => params[:username], :password => params[:password])
     @errors.push(result[:errors]).flatten
 
     if result[:success?]
