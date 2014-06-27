@@ -21,18 +21,6 @@ get '/' do
   end
 end
 
-get '/signup' do
-  result = RPS::ValidateSession.run(params)
-  @errors = result[:errors]
-
-  if result[:success?]
-    @player = result[:player]
-    erb :home
-  else
-    erb :signup
-  end
-end
-
 post '/signup' do
   result = RPS::ValidateSession.run(params)
   @errors = result[:errors]
@@ -62,7 +50,7 @@ post '/signup' do
   end
 end
 
-get '/login' do
+post '/login' do
   result = RPS::ValidateSession.run(params)
   @errors = result[:errors]
 
@@ -83,7 +71,7 @@ get '/login' do
   end
 end
 
-get '/signout' do
+get '/logout/:player_id' do
   result = RPS::DeleteSession.run(params)
   @errors = result[:errors]
 
