@@ -1,12 +1,5 @@
 (function(){
 
-  // window.jokes = [];
-
-  // // will run on page load
-  // $.get('/api/jokes', function(data) {
-  //   jokes = data;
-  // });
-
   // business logic constructor function
   var BusinessLogic = function() {
     // picks a random id from the available ids in the jokes array

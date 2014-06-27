@@ -6,7 +6,12 @@
     <link rel="stylesheet" href="/css/style.css" type="text/css" />
     <link rel="stylesheet" href="/css/mystyle.css" type="text/css" />
   </head>
-  <body>
+
+  <body class="
+      <% if @player %>
+          <%= "loggedIn" %>
+      <%end%>
+      ">
 
     <%= erb :_header %>
     <div class="row panel">
