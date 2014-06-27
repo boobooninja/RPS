@@ -2,7 +2,7 @@ module RPS
   class SignIn
     def self.run(params) # :username => "username", :password => "mypassword"
       # check to see if player exists
-      player = RPS.db.find('players',{:username => params[:username]})
+      player = RPS.db.find('players',{:username => params[:username]}).first
       if player # create a session
         # validate password
         if player.has_password?(params[:password])

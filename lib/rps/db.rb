@@ -88,13 +88,13 @@ module RPS
 
     ### UPDATE ###
 
-    def update(sklass, id, args)
+    def update(sklass, id_array, args)
       keys   = args.keys.join(", ")
       values = args.values.map { |s| "'#{s}'" }.join(', ')
 
       command = %Q[ UPDATE #{sklass}
                     SET (#{keys}) = (#{values})
-                    WHERE id = #{id}
+                    WHERE #{id_array[0]} = '#{id_array[1]}'
                     returning *; ]
 
       execute_the(command, sklass)
@@ -102,9 +102,9 @@ module RPS
 
     ### DELETE ###
 
-    def delete(sklass, id)
+    def delete(sklass, id_array)
       command = %Q[ DELETE FROM #{sklass}
-                    WHERE id = #{id}
+                    WHERE #{id_array[0]} = '#{id_array[1]}'
                     returning *; ]
 
       execute_the(command, sklass)

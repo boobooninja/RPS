@@ -11,26 +11,30 @@ set :bind, '0.0.0.0' # Vagrant fix
 set :port, 9494
 
 get '/' do
-  if session[:session_id]
-    result = RPS::ValidateSession.run(:session_id => session[:session_id])
-    if result[:success?]
-      @player = result[:player]
-      erb :home
-    else
-      erb :main
-    end
+  result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  if result[:success?]
+    @player = result[:player]
+    erb :home
   else
     erb :main
   end
 end
 
-get '/signin' do
-  if session[:session_id]
-    result = RPS::ValidateSession.run(:session_id => session[:session_id])
-    if result[:success?]
-      @player = result[:player]
-      erb :home
-    end
+get '/signup' do
+  result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  if result[:success?]
+    @player = result[:player]
+    erb :home
+  else
+    erb :signup
+  end
+end
+
+get '/login' do
+  result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  if result[:success?]
+    @player = result[:player]
+    erb :home
   else
     result = RPS::SignIn.run(:username => params[:username], :password => params[:password])
     if result[:success?]
@@ -39,33 +43,32 @@ get '/signin' do
       erb :home
     else
       @error = result[:error]
-      erb :signin
+      erb :login
     end
   end
 end
 
-get '/player/:player_id/signout' do
+get '/signout' do
   result = RPS::DeleteSession.run(:session_id => session[:session_id])
-
-  session[:session_id] = nil
-
-  erb :main
+  if result[:success?]
+    session[:session_id] = nil
+    erb :main
+  else
+    @error = result[:error]
+    erb :main
+  end
 end
 
 get '/match/:match_id/game/:game_id' do
-  if session[:session_id]
-    result = RPS::ValidateSession.run(:session_id => session[:session_id])
-    if result[:success?]
-      @player = result[:player]
-      @match  = RPS.db.find('matches, playermatches',{:player_id => @player.id, :completed_at => null})
-      @games  = RPS.db.find('games, moves',{:match_id => @match.id})
-      erb :game
-    else
-      @error = result[:error]
-      erb :signin
-    end
+  result = RPS::ValidateSession.run(:session_id => session[:session_id])
+  if result[:success?]
+    @player = result[:player]
+    @match  = RPS.db.find('matches, playermatches',{:player_id => @player.id, :completed_at => null}).first
+    @games  = RPS.db.find('games, moves',{:match_id => @match.id})
+    erb :game
   else
-    erb :signin
+    @error = result[:error]
+    erb :login
   end
 end
 
