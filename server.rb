@@ -71,7 +71,7 @@ post '/login' do
   end
 end
 
-get '/logout/:player_id' do
+get '/signout' do
   result = RPS::DeleteSession.run(params)
   @errors = result[:errors]
 

@@ -1,0 +1,55 @@
+<div class="game-panel">
+  <!-- This is where game play happens -->
+</div>
+
+<div id='templates'>
+  <script type='text/template' class='play-move'>
+    <ul class="small-block-grid-3">
+      <li class="callout panel text-center rock">ROCK</li>
+      <li class="callout panel text-center paper">PAPER</li>
+      <li class="callout panel text-center scissors">SCISSORS</li>
+    </ul>
+  </script>
+  <script type='text/template' class='wait-for-opponent'>
+    <h3>Waiting for opponent</h3>
+  </script>
+</div>
+ 
+      <script type="text/javascript">
+        var person;
+
+        var personTemplateHtml = $('#templates .person-row').html()
+          , personTemplate = _.template(personTemplateHtml)
+        ;
+
+        var theFormatter = function(person) {
+          console.log("this is running", person);
+          var human = {
+            name: person
+          };
+
+          // var html = "<p data-name=''>" + person + " is awesome <a class=\"tell-name\" href=\"#\">alert name</a></p>";
+          return personTemplate(human);
+          // return html;
+        };
+
+        $('input[type="button"]').on('click', function() {
+          // alert('this is the focus event');
+          console.log("this works");
+          person = $('.user-input').val();
+          console.log("what is the user input", person);
+          var newHTML = theFormatter(person);
+          console.log("new html -> ", newHTML);
+          $('.people').append(newHTML);
+          // $('.people').last().data('name', person);
+        });
+
+        $(".people").on('click', '.tell-name', function() {
+          console.log("does tell name work????");
+          // console.log('this is my info', $(this).find('.person').data('name') );
+          // alert(  );
+        });
+
+      </script>
+    </body>
+</html>
