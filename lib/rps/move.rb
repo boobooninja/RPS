@@ -24,5 +24,9 @@ module RPS
         paper:    :rock,
         scissors: :paper }[self.action]
     end
+
+    def to_json_hash
+      {:move_id => @move_id, :game_id => @game_id, :player_id => @player_id, :action => @action}
+    end
   end
 end

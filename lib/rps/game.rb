@@ -16,5 +16,9 @@ module RPS
     def moves
       @moves ||= TM.db.find('moves', {'game_id' => @game_id})
     end
+
+    def to_json_hash
+      {:game_id => @game_id, :match_id => @match_id, :started_at => @started_at, :completed_at => @completed_at}
+    end
   end
 end

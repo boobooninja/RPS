@@ -83,60 +83,6 @@ get '/logout' do
   end
 end
 
-# TODO make api method
-# get '/players/:player_id/matches' do
-#   result = RPS::ValidateSession.run(params)
-#   @errors = result[:errors]
-
-#   if result[:success?]
-#     @player  = result[:player]
-#     @matches = @player.matches
-
-#     erb :matches
-#   else
-#     erb :main
-#   end
-# end
-
-# TODO make api method
-# TODO '/players/:player_id/matches'
-# post '/matches' do
-#   result = RPS::ValidateSession.run(params)
-#   @errors = result[:errors]
-
-#   if result[:success?]
-#     @player = result[:player]
-#     result  = RPS::CreateMatch.run(params)
-#     @errors.push(result[:errors]).flatten
-
-#     if result[:success?]
-#       @match = result[:match]
-
-#       erb :match
-#     else
-#       erb :matches
-#     end
-#   else
-#     erb :matches
-#   end
-# end
-
-# TODO make api method (games with moves 'history')
-# get '/matches/:match_id/games' do |match_id|
-#   result = RPS::ValidateSession.run(params)
-#   @errors = result[:errors]
-
-#   if result[:success?]
-#     @player = result[:player]
-#     @match  = @player.get_match(match_id)
-#     @games  = @match.games
-
-#     erb :games
-#   else
-#     erb :home
-#   end
-# end
-
 get '/matches/:match_id/games/:game_id' do |match_id,game_id|
   result = RPS::ValidateSession.run(params)
   @errors = result[:errors]
@@ -230,8 +176,7 @@ get '/matches/:match_id/history' do |match_id|
     @match  = @player.get_match(match_id)
 
     if @match
-#TODO RPS::GetMatchHistory
-      result = RPS::GetMatchHistory(params, @match)
+      result = RPS::MatchHistory(params, @match)
       @errors.push(result[:errors]).flatten
 
       if result[:success?]
@@ -243,36 +188,3 @@ get '/matches/:match_id/history' do |match_id|
 
   JSON(json_hash)
 end
-
-# TODO make api method (games with moves 'history')
-# get '/matches/:match_id/games' do |match_id|
-#   result = RPS::ValidateSession.run(params)
-#   @errors = result[:errors]
-
-#   if result[:success?]
-#     @player = result[:player]
-#     @match  = @player.get_match(match_id)
-#     @games  = @match.games
-
-#     erb :games
-#   else
-#     erb :home
-#   end
-# end
-
-
-
-# post '/api/jokes/create' do
-#   original_jokes_length = @@jokes.count
-#   if params[:joke]['joke'].empty? || params[:joke]['answer'].empty?
-#     response = {success: false, message: "you did fill things in"}
-#   else
-#     @@jokes.push(params[:joke])
-#     if @@jokes.count == original_jokes_length + 1
-#       response = {success: true, message: "You Added joke correctly"}
-#     else
-#       response = {success: false, message: "Something went wrong"}
-#     end
-#   end
-#   json response
-# end
