@@ -38,6 +38,10 @@ module RPS
       @score
     end
 
+    def to_json_hash
+      {:player_id => @player_id, :name => @name, :username => @username, :pwd => @pwd}
+    end
+
     private
 
     def score=(num)

@@ -1,32 +1,29 @@
 module RPS
   class SignUp
     def self.run(params) # :name = params[:name], :username => params[:username], :password => params[:password]
-      name = params[:name]
+      name     = params[:name]
       username = params[:username]
       password = params[:password]
 
-      # if username && password
-      #   args = {}
-      #   args[:name] = name if name
-      #   args[:username] = username
-      #   args[:password]
-      #   player = RPS.db.create('players', {:name => session_id, :player_id => player.id})
+      if username && password
+        # check to see if player exists
+        player = RPS.db.find('players',{:username => username}).first
 
-      # # check to see if player exists
-      # player = RPS.db.find('players',{:username => params[:username]}).first
-      # if player # create a session
-      #   # validate password
-      #   if player.has_password?(params[:password])
-      #     session_id = SecureRandom.base64
-      #     session = RPS.db.create('sessions', {:session_id => session_id, :player_id => player.id})
+        if player
+          { :success? => false, :errors => ['username is already taken'] }
+        else
+          args = {}
+          args[:name    ] = name if name
+          args[:username] = username
+          args[:pwd     ] = Digest::SHA1.hexdigest(password)
 
-      #     { :success? => true, :session_id => session_id, :player => player, :errors => [] }
-      #   else
-      #     { :success? => false, :errors => ['invalid password'] }
-      #   end
-      # else # return a error
-      #   { :success? => false, :errors => ['invalid username'] }
-      # end
+          player = RPS.db.create('players', args)
+
+          { :success? => true, :player => player, :errors => [] }
+        end
+      else # return a error
+        { :success? => false, :errors => ['invalid username or password'] }
+      end
     end
   end
 end

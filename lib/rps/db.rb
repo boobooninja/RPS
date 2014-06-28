@@ -3,7 +3,7 @@ module RPS
     def initialize(dbname = 'rps')
       @conn = PG.connect(host: 'localhost', dbname: dbname)
 
-      # build_tables
+      build_tables
     end
 
     def build_tables
@@ -157,14 +157,10 @@ module RPS
         presult[:match_id    ] = presult[:match_id   ].to_i if presult[:match_id]
         presult[:game_id     ] = presult[:game_id    ].to_i if presult[:game_id]
         presult[:move_id     ] = presult[:move_id    ].to_i if presult[:move_id]
-        if presult[:started_at] == :NULL
-          presult[:started_at] = nil
-        else
+        if presult[:started_at]
           presult[:started_at] = Time.parse( presult[:started_at] )
         end
-        if presult[:completed_at] == :NULL
-          presult[:completed_at] = nil
-        else
+        if presult[:completed_at]
           presult[:completed_at] = Time.parse( presult[:completed_at] )
         end
 

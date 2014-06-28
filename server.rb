@@ -83,6 +83,19 @@ get '/logout' do
   end
 end
 
+get '/players/:player_id/home' do |player_id|
+  result = RPS::ValidateSession.run(params)
+  @errors = result[:errors]
+
+  if result[:success?]
+    @errors.push(result[:errors]).flatten
+    @player = result[:player]
+    erb :home
+  else
+    erb :login
+  end
+end
+
 get '/matches/:match_id/games/:game_id' do |match_id,game_id|
   result = RPS::ValidateSession.run(params)
   @errors = result[:errors]

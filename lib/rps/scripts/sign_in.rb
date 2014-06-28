@@ -11,9 +11,13 @@ module RPS
           # validate password
           if player.has_password?(password)
             rps_session_id = SecureRandom.base64
-            session = RPS.db.create('sessions', {:session_id => rps_session_id, :player_id => player.id})
+            rps_session = RPS.db.create('sessions', {:session_id => rps_session_id, :player_id => player.player_id}).first
 
-            { :success? => true, :rps_session_id => session.session_id, :player => player, :errors => [] }
+            if rps_session
+              { :success? => true, :rps_session_id => rps_session.session_id, :player => player, :errors => [] }
+            else
+              { :success? => false, :errors => ['unable to create a session'] }
+            end
           else
             { :success? => false, :errors => ['invalid password'] }
           end
