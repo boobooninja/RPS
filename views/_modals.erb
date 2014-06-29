@@ -1,28 +1,42 @@
-<div id="loginModal" class="tiny reveal-modal" data-reveal>
+<% unless @player %>
+  <div id="loginModal" class="tiny reveal-modal" data-reveal>
     <div class="container panel">
-        <h3 class="text-center">Login</h3>
-        </br>
-        <form autocomplete="on" action="/login" method="post">
-            <input type="text" name="username" placeholder="Username">
-            <input type="password" name="password" placeholder="Password">
-            <button type="submit" name="submit" class="button radius expand">Submit</button>
-        </form>
+      <h3 class="text-center">Login</h3>
+      </br>
+      <form autocomplete="on" action="/login" method="post">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit" name="submit" class="button radius expand">Submit</button>
+      </form>
     </div>
-</div>
+  </div>
 
-<div id="signUpModal" class="small reveal-modal" data-reveal>
+  <div id="signUpModal" class="small reveal-modal" data-reveal>
     <div class="container panel">
-        <h3 class="text-center">Sign Up for RPS Extreme!!!</h3>
-        </br>
-        <form autocomplete="on" autocorrect="on" autocapitalize="off" action="/signup" method="post">
-            <input type="text" name="FirstName" placeholder="First Name" required autofocus>
-            <input type="text" name="LastName" placeholder="Last Name" required>
-            <input type="email" name="Email" placeholder="Email Address" required autocapitalize="off">
-            <input type="text" name="username" placeholder="Username" required autocapitalize="off" autocorrect="off">
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="password2" placeholder="Retype Password" required>
-            <button type="submit" name="submit" class="button radius expand">Submit</button>
-            <!-- Add a jquery function to disable submit buttons if passwords don't match -->
-        </form>
+      <h3 class="text-center">Sign Up for RPS Extreme!!!</h3>
+      </br>
+      <form autocomplete="on" autocorrect="on" autocapitalize="off" action="/signup" method="post">
+        <input type="text" name="FirstName" placeholder="First Name" required autofocus>
+        <input type="text" name="LastName" placeholder="Last Name" required>
+        <input type="email" name="Email" placeholder="Email Address" required autocapitalize="off">
+        <input type="text" name="username" placeholder="Username" required autocapitalize="off" autocorrect="off">
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Retype Password" required>
+        <button type="submit" name="submit" class="button radius expand">Submit</button>
+        <!-- Add a jquery function to disable submit buttons if passwords don't match -->
+      </form>
     </div>
-</div>
+  </div>
+
+<% else %>
+
+  <div id="logoutModal" class="tiny reveal-modal" data-reveal>
+    <div class="row panel">
+      <p class="text-center">Are you sure you want to log out?</p>
+      <form action="/logout" method="post">
+        <button type="submit" name="submit" class="button radius small columns medium-4 medium-offset-4">OK</button>
+      </form>
+    </div>
+  </div>
+
+<% end %>

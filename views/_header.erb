@@ -1,14 +1,15 @@
+<%# @player = RPS::Player.new( {paul: "paul", id: "5", username: "pbd", pwd: "123"})%>
 <div class="row panel header">
-    <div class="columns large-4 medium-5 small-6 logo"><h4>RPS Extreme!!!</h4></div>
-    <div class="columns large-4 large-offset-4 medium-5 medium-offset-2 small-6">
-        <%if @player%>
-            <h4 class="text-right">
-                <a href="#"><%=@player.username%></a>  :  <a href="/logout/<%=@player.username%>">Log Out</a>
-            </h4>
-        <%else%>
-            <h4 class="text-right">
-                <a href="#" data-reveal-id="signUpModal">Sign Up</a>  :  <a href="#" data-reveal-id="loginModal">Login</a>
-            </h4>
-        <%end%>
-    </div>
+  <div class="columns large-4 medium-5 small-6"><span class="logo">RPS Extreme!!!<span></div>
+  <div class="columns large-4 large-offset-4 medium-5 medium-offset-2 small-6">
+    <%if @player%>
+      <h4 class="text-right">
+        <a href="#"><%=@player.username%></a>  :  <a href="#" data-reveal-id="logoutModal">Logout</a>
+      </h4>
+    <%else%>
+      <h4 class="text-right">
+        <a href="#" data-reveal-id="signUpModal">Sign Up</a> : <a href="#" data-reveal-id="loginModal">Login</a>
+      </h4>
+    <%end%>
+  </div>
 </div>
