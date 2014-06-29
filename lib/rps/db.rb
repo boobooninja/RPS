@@ -3,7 +3,7 @@ module RPS
     def initialize(dbname = 'rps')
       @conn = PG.connect(host: 'localhost', dbname: dbname)
 
-      # build_tables
+      build_tables
     end
 
     def build_tables
@@ -26,7 +26,7 @@ module RPS
       @conn.exec(%Q[
         CREATE TABLE IF NOT EXISTS matches(
           match_id serial NOT NULL PRIMARY KEY,
-          started_at timestamp NOT NULL DEFAULT current_timestamp,
+          started_at timestamp,
           completed_at timestamp
         );])
 
@@ -110,16 +110,30 @@ module RPS
       execute_the(command, sklass)
     end
 
+    def create_playermatches(sklass,args)
+      keys   = args.keys.join(", ")
+      values = args.values.map { |s| "'#{s}'" }.join(', ')
+
+      command = %Q[ INSERT INTO #{sklass} (#{keys})
+                    VALUES (#{values})
+                    returning *; ]
+
+      results = @conn.exec(command)
+
+      parsed_results = parse_the(results)
+    end
+
     private
 
     def klass(sklass)
+      this_klass = sklass.split(',').first
       {
         'sessions' => RPS::Session,
         'players'  => RPS::Player,
         'matches'  => RPS::Match,
         'games'    => RPS::Game,
         'moves'    => RPS::Move
-      }[sklass]
+      }[this_klass]
     end
 
     def execute_the(command, sklass)
@@ -143,8 +157,12 @@ module RPS
         presult[:match_id    ] = presult[:match_id   ].to_i if presult[:match_id]
         presult[:game_id     ] = presult[:game_id    ].to_i if presult[:game_id]
         presult[:move_id     ] = presult[:move_id    ].to_i if presult[:move_id]
-        presult[:started_at  ] = Time.parse( presult[:started_at] ) if presult[:started_at]
-        presult[:completed_at] = Time.parse( presult[:completed_at] ) if presult[:completed_at]
+        if presult[:started_at]
+          presult[:started_at] = Time.parse( presult[:started_at] )
+        end
+        if presult[:completed_at]
+          presult[:completed_at] = Time.parse( presult[:completed_at] )
+        end
 
         presults << presult
       end
