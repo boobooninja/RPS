@@ -14,7 +14,7 @@ module RPS
 
       # get match
       matches.each do |m|
-        match = m if m.id == match_id
+        match = m if m.match_id == match_id
       end
 
       if match
@@ -22,7 +22,7 @@ module RPS
 
         # get opponent
         match.players.each do |p|
-          opponent = p if p.player_id != player.id
+          opponent = p if p.player_id != player.player_id
         end
 
         if opponent
@@ -35,7 +35,7 @@ module RPS
 
         # get game
         games.each do |g|
-          game = g if g.id == game_id
+          game = g if g.game_id == game_id
         end
 
         if game
@@ -44,18 +44,18 @@ module RPS
           # moves = game.moves
           # moves = RPS.db.find('moves',{'game_id' => game.id})
 
-          players_moves   = player.moves_for_game(game.id)
-          opponents_moves = opponent.moves_for_game(game.id)
+          players_moves   = player.moves_for_game(game.game_id)
+          opponents_moves = opponent.moves_for_game(game.game_id)
 
           if players_moves.empty?
             # create move
             if create_move(game, player, action, return_hash)
               # update game
-              game = RPS.db.update('games', ['game_id', game.id], {'completed_at' => Time.now}).first
+              game = RPS.db.update('games', ['game_id', game.game_id], {'completed_at' => Time.now}).first
               if game
                 # return_hash[:game] = game
                 # check winner
-                games = RPS.db.find('games',{'match_id' => match.id})
+                games = RPS.db.find('games',{'match_id' => match.match_id})
                 # get updated games
 
                 return_hash[:games] = []
@@ -75,11 +75,11 @@ module RPS
 
                 # check if match is over
                 if return_hash[:winner]
-                  match = RPS.db.update('match', ['match_id', match.id], {'completed_at' => Time.now})
+                  match = RPS.db.update('match', ['match_id', match.match_id], {'completed_at' => Time.now})
                   return_hash[:match] = match.to_json_hash
                 else
                   # create a new game
-                  new_game = RPS.db.create('games', {'match_id' => match.id}).first
+                  new_game = RPS.db.create('games', {'match_id' => match.match_id}).first
                   return_hash[:game] = new_game.to_json_hash
                 end
                 return_hash
@@ -110,7 +110,7 @@ module RPS
     private
 
     def self.create_move(game, player, action, response_hash)
-      new_move = RPS.db.create('moves', {'game_id' => game.id, 'player_id' => player.id, 'action' => action}).first
+      new_move = RPS.db.create('moves', {'game_id' => game.game_id, 'player_id' => player.player_id, 'action' => action}).first
       if new_move
         # response_hash[:success?] = true
         # response_hash[:move]     = new_move
@@ -130,8 +130,8 @@ module RPS
 
       games.each do |game|
         games.moves.each do |move|
-          player_move = move if move.player_id == player.id
-          opponent_move = move if move.player_id == opponent.id
+          player_move = move if move.player_id == player.player_id
+          opponent_move = move if move.player_id == opponent.player_id
         end
         result = player_move.wins?(opponent_move)
         if result == true
