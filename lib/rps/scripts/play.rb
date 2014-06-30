@@ -79,7 +79,7 @@ module RPS
                   return_hash[:match] = match.to_json_hash
                 else
                   # create a new game
-                  new_game = RPS.db.create('games' {'match_id' => match.id})
+                  new_game = RPS.db.create('games', {'match_id' => match.id}).first
                   return_hash[:game] = new_game.to_json_hash
                 end
                 return_hash
@@ -134,9 +134,9 @@ module RPS
           opponent_move = move if move.player_id == opponent.id
         end
         result = player_move.wins?(opponent_move)
-        if result = true
+        if result == true
           player_score += 1
-        elsif result = false
+        elsif result == false
           opponent_score += 1
         end
       end
