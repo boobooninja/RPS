@@ -3,7 +3,7 @@
   <ul class ="your-move">
     <!-- Your Move Games Here -->
     <li>
-    <form action="/player/<%="#{@player[:player_id]}"%>/matches" method="post">
+    <form action="/api/players/<%=@player.player_id%>/matches" method="post">
         <button class="button expand start-new-game">Start new match</button>
       </form>
     </li>
