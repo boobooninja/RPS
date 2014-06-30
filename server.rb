@@ -72,7 +72,7 @@ post '/login' do
   end
 end
 
-get '/logout' do
+post '/logout' do
   result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
