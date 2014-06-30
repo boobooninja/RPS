@@ -31,11 +31,11 @@ post '/signup' do
     redirect to "players/#{@player.player_id}"
   else
     result = RPS::SignUp.run(params)
-    @errors.push(result[:errors]).flatten
+    @errors.push(result[:errors]).flatten!
 
     if result[:success?]
       result = RPS::SignIn.run(params)
-      @errors.push(result[:errors]).flatten
+      @errors.push(result[:errors]).flatten!
 
       if result[:success?]
         session[:rps_session_id] = result[:rps_session_id]
@@ -59,7 +59,7 @@ post '/login' do
     redirect to "players/#{@player.player_id}"
   else
     result = RPS::SignIn.run(params)
-    @errors.push(result[:errors]).flatten
+    @errors.push(result[:errors]).flatten!
 
     if result[:success?]
       session[:rps_session_id] = result[:rps_session_id]
@@ -128,7 +128,7 @@ end
 # # have a simple Play script that takes those and
 # # validates the play
 #     result = RPS::Play.run(params)
-#     @errors.push(result[:errors]).flatten
+#     @errors.push(result[:errors]).flatten!
 
 #     if result[:success]
 #       @player   = result[:player]
@@ -158,7 +158,7 @@ post '/api/players/:player_id/matches/:match_id/games/:game_id' do |player_id,ma
 # validates the play
     result = RPS::Play.run(params)
 
-    result[:errors].push(@errors).flatten
+    result[:errors].push(@errors).flatten!
   else
     result = {:errors => @errors}
   end
@@ -189,32 +189,41 @@ end
 post '/api/players/:player_id/matches' do |player_id|
   result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
+  json_hash = {:errors => @errors}
+
 
   if result[:success?]
     @player = result[:player]
 
     result = RPS::JoinMatch.run(params, @player)
+    @errors.push(result[:errors]).flatten!
+
     if result[:success?]
       @match = result[:match]
       @game  = result[:game]
+      @opponent = match.opponent_for(@player)
 
-      redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
+      # redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
+      json_hash.merge({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => @opponent.to_json_hash})
     else
       result  = RPS::CreateMatch.run(params, @player)
-      @errors.push(result[:errors]).flatten
+      @errors.push(result[:errors]).flatten!
 
       if result[:success?]
         @match = result[:match]
         @game  = result[:game]
 
-        redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
+        # redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
+        json_hash.merge({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => nil})
       else
-        erb :home
+        # erb :home
       end
     end
   else
-    erb :index
+    # erb :index
   end
+
+  JSON(json_hash)
 end
 
 get '/matches/:match_id/history' do |match_id|
@@ -228,7 +237,7 @@ get '/matches/:match_id/history' do |match_id|
 
     if @match
       result = RPS::MatchHistory(params, @match)
-      @errors.push(result[:errors]).flatten
+      @errors.push(result[:errors]).flatten!
 
       if result[:success?]
         json_hash[:success] = true
