@@ -60,9 +60,14 @@ module RPS
       keys   = args.keys.join(", ")
       values = args.values.map { |s| "'#{s}'" }.join(', ')
 
-      command = %Q[ INSERT INTO #{sklass} (#{keys})
-                    VALUES (#{values})
-                    returning *; ]
+      if keys.empty?
+        command = %Q[ INSERT INTO #{sklass}
+                      returning *; ]
+      else
+        command = %Q[ INSERT INTO #{sklass} (#{keys})
+                      VALUES (#{values})
+                      returning *; ]
+      end
 
       execute_the(command, sklass)
     end

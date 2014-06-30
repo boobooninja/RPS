@@ -98,10 +98,11 @@ get '/players/:player_id/matches/:match_id' do |player_id,match_id|
   @errors = result[:errors]
 
   if result[:success?]
-    @player = result[:player]
-    @match  = @player.get_match(match_id)
-    @game   = @match.get_current_game
+    @player   = result[:player]
+    @match    = @player.get_match(match_id)
+    @game     = @match.get_current_game
     @opponent = @match.opponent_for(@player)
+    @score    = RPS::GetScore.run(@match, @player, @opponent)
 
     erb :game
   else
@@ -185,16 +186,24 @@ post '/api/players/:player_id/matches' do |player_id|
   if result[:success?]
     @player = result[:player]
 
-    result  = RPS::CreateMatch.run(params, @player)
-    @errors.push(result[:errors]).flatten
-
+    result = RPS::JoinMatch.run(params, @player)
     if result[:success?]
       @match = result[:match]
       @game  = result[:game]
 
       redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
     else
-      erb :home
+      result  = RPS::CreateMatch.run(params, @player)
+      @errors.push(result[:errors]).flatten
+
+      if result[:success?]
+        @match = result[:match]
+        @game  = result[:game]
+
+        redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
+      else
+        erb :home
+      end
     end
   else
     erb :index
