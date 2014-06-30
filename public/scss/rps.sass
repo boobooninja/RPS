@@ -1,0 +1,36 @@
+.logo
+  padding: 8px
+  background: #3720C9
+  border-radius: .7rem
+  border: 2px solid #D2079A
+  text-align: center
+  -ms-transform: skew(-35deg,-1deg) /* IE 9 */
+  -webkit-transform: skew(-35deg,-1deg) /* Chrome, Safari, Opera */
+  transform: skew(-35deg,-1deg) /* Standard syntax */
+  span
+    color: #FFF409
+    font-size: 1.7rem
+    font-weight: bold
+    text-shadow: -10px 5px #000000
+
+div.panel
+  -webkit-border-radius: 15px
+  border-radius: 15px
+  padding: 20px
+  margin: 0 auto
+  margin-bottom: 1rem
+  width: 82.5%
+  &.modal
+    padding: none
+    width: 100%
+
+@media all and (max-width: 64rem)
+  .main
+    max-width: 90%
+
+div.callout.panel.your-move
+  background-color: green
+
+div.callout.panel.their-move
+  background-color: orange
+

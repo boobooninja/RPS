@@ -1,37 +1,41 @@
-.container {
-  height: 100%;
-  margin-top: 20%;
-}
+/* line 1, ../scss/rps.sass */
+.logo {
+  padding: 8px;
+  background: #3720c9;
+  border-radius: 0.7rem;
+  border: 2px solid #d2079a;
+  text-align: center;
+  -ms-transform: skew(-35deg, -1deg);
+  -webkit-transform: skew(-35deg, -1deg);
+  transform: skew(-35deg, -1deg); }
+  /* line 10, ../scss/rps.sass */
+  .logo span {
+    color: #fff409;
+    font-size: 1.7rem;
+    font-weight: bold;
+    text-shadow: -10px 5px black; }
 
-.my-box {
-  width: 80%;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  margin: 50px auto;
-}
-
+/* line 16, ../scss/rps.sass */
 div.panel {
   -webkit-border-radius: 15px;
   border-radius: 15px;
   padding: 20px;
   margin: 0 auto;
   margin-bottom: 1rem;
-  width: 75%;
-}
-
-.center {
-  text-align: center;
-}
-
-#sign_up_button {
-  width: 33%;
-  -webkit-border-radius: 15px;
-  border-radius: 15px;
-}
+  width: 82.5%; }
+  /* line 23, ../scss/rps.sass */
+  div.panel.modal {
+    padding: none;
+    width: 100%; }
 
 @media all and (max-width: 64rem) {
+  /* line 28, ../scss/rps.sass */
   .main {
-    max-width: 90%;
-  }
-}
+    max-width: 90%; } }
+/* line 31, ../scss/rps.sass */
+div.callout.panel.your-move {
+  background-color: green; }
+
+/* line 34, ../scss/rps.sass */
+div.callout.panel.their-move {
+  background-color: orange; }
