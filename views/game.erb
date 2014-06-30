@@ -2,10 +2,10 @@
   <%# Row 1 %>
   <div class="columns small-4 text-left subheader">
     <h4>
-      <%= "Match: #{@match[:match_id]}" %>
+      <%= "Match: #{@match.match_id}" %>
       </br>
       <small>
-        Started at: <span class="match_started_at"><%= @match[:started_at] || "Waiting on other player" %>
+        Started at: <span class="match_started_at"><%= @match.started_at || "Waiting on other player" %>
       </small>
     </h4>
   </div>
