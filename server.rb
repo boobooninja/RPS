@@ -16,7 +16,7 @@ get '/' do
 
   if result[:success?]
     @player = result[:player]
-    redirect to "player/#{@player.id}"
+    redirect to "player/#{@player.player_id}"
   else
     erb :index
   end
@@ -28,7 +28,7 @@ post '/signup' do
 
   if result[:success?]
     @player = result[:player]
-    redirect to "player/#{@player.id}"
+    redirect to "player/#{@player.player_id}"
   else
     result = RPS::SignUp.run(params)
     @errors.push(result[:errors]).flatten
@@ -40,7 +40,7 @@ post '/signup' do
       if result[:success?]
         session[:rps_session_id] = result[:rps_session_id]
         @player = result[:player]
-        redirect to "player/#{@player.id}"
+        redirect to "player/#{@player.player_id}"
       else
         erb :index
       end
@@ -56,7 +56,7 @@ post '/login' do
 
   if result[:success?]
     @player = result[:player]
-    redirect to "player/#{@player.id}"
+    redirect to "player/#{@player.player_id}"
   else
     result = RPS::SignIn.run(params)
     @errors.push(result[:errors]).flatten
@@ -65,7 +65,7 @@ post '/login' do
       session[:rps_session_id] = result[:rps_session_id]
       @player = result[:player]
 
-      redirect to "player/#{@player.id}"
+      redirect to "player/#{@player.player_id}"
     else
       erb :index
     end
@@ -175,7 +175,7 @@ get '/api/players/:player_id/matches' do |player_id|
   JSON(json_hash)
 end
 
-post '/players/:username/matches' do |username|
+post 'api/players/:player_id/matches' do |player_id|
   result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
   json_hash = {:errors => @errors}
@@ -188,12 +188,15 @@ post '/players/:username/matches' do |username|
 
     if result[:success?]
       @match = result[:match]
+      @game  = result[:game]
 
-      json_hash[:match] = @match.to_json_hash
+      redirect to "/player/#{@player.player_id}/matches/#{@match.match_id}"
+    else
+      erb :home
     end
+  else
+    erb :index
   end
-
-  JSON(json_hash)
 end
 
 get '/matches/:match_id/history' do |match_id|
