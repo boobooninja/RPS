@@ -58,11 +58,18 @@ module RPS
     ### CREATE ###
 
     def create(sklass, args)
+      # args.each do |k,v|
+      #   if v == nil
+      #     args[k] = 'NULL'
+      #   end
+      # end
+
       keys   = args.keys.join(", ")
       values = args.values.map { |s| "'#{s}'" }.join(', ')
 
       if keys.empty?
         command = %Q[ INSERT INTO #{sklass}
+                      DEFAULT VALUES
                       returning *; ]
       else
         command = %Q[ INSERT INTO #{sklass} (#{keys})
