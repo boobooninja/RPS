@@ -1,7 +1,7 @@
 module RPS
   class CreateMatch
     def self.run(params, player)
-      match = RPS.db.create('matches',{'started_at' => Time.now}).first
+      match = RPS.db.create('matches',{}).first
       result = RPS.db.create_playermatches('playermatches',{:player_id => player.player_id, :match_id => match.match_id})
       game = RPS.db.create('games', {'match_id' => match.match_id}).first
 

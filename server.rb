@@ -185,16 +185,24 @@ post '/api/players/:player_id/matches' do |player_id|
   if result[:success?]
     @player = result[:player]
 
-    result  = RPS::CreateMatch.run(params, @player)
-    @errors.push(result[:errors]).flatten
-
+    result = RPS::JoinMatch.run(params, @player)
     if result[:success?]
       @match = result[:match]
       @game  = result[:game]
 
       redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
     else
-      erb :home
+      result  = RPS::CreateMatch.run(params, @player)
+      @errors.push(result[:errors]).flatten
+
+      if result[:success?]
+        @match = result[:match]
+        @game  = result[:game]
+
+        redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
+      else
+        erb :home
+      end
     end
   else
     erb :index
