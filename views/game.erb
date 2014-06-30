@@ -14,22 +14,22 @@
   </div>
   <div class="columns small-4 text-right">
     <h4 class="subheader">
-      <%= "Game: #{@games.size + 1}" %>
+      <%= "Game: #{@match.games.size + 1}" %>
       </br>
       <small>
-        <%= "Started at: #{@game[:started_at]}" %>
+        <%= "Started at: #{@game.started_at}" %>
       </small>
     </h4>
   </div>
   <%# Row 2 %>
   <div class="columns small-6 text-left">
     <h2 class="subheader">
-      <%= "#{@opponent[:name]} : #{@opponent[:score]}" %>
+      <%= "#{@opponent.name} : #{@opponent.score}" %>
     </h2>
   </div>
   <div class="columns small-6 text-right">
     <h2 class="subheader">
-      <%= "#{@player[:name]} : #{@player[:score]}" %>
+      <%= "#{@player.name} : #{@player.score}" %>
     </h2>
   </div>
 </div>

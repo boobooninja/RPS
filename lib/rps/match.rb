@@ -16,7 +16,7 @@ module RPS
       @players ||= RPS.db.find('players, playermatches', {'match_id' => @match_id})
     end
 
-    def get_opponent(player)
+    def opponent_for(player)
       players.each do |p|
         return p if p.player_id != player.player_id
       end
