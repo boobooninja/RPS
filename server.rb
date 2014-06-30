@@ -201,7 +201,7 @@ post '/api/players/:player_id/matches' do |player_id|
     if result[:success?]
       @match = result[:match]
       @game  = result[:game]
-      @opponent = match.opponent_for(@player)
+      @opponent = @match.opponent_for(@player)
 
       # redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
       json_hash.merge({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => @opponent.to_json_hash})
