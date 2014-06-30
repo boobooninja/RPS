@@ -24,6 +24,10 @@ module RPS
       RPS.db.find('games',{'match_id' => @match_id, 'game_id' => game_id}).first
     end
 
+    def get_current_game
+      RPS.db.find('games',{'match_id' => @match_id, 'completed_at' => nil}).first
+    end
+
     def to_json_hash
       {:match_id => @match_id, :started_at => @started_at, :completed_at => @completed_at}
     end

@@ -39,7 +39,7 @@ module RPS
     end
 
     def to_json_hash
-      {:player_id => @player_id, :name => @name, :username => @username, :pwd => @pwd}
+      {:player_id => @player_id, :name => @name, :username => @username}
     end
 
     private
