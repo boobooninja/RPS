@@ -71,7 +71,9 @@ module RPS
                 end
                 # return_hash[:games] = games
 
-                get_score_for(games, player, opponent, return_hash)
+                # get_score_for(games, player, opponent, return_hash)
+                score_hash = RPS::GetScore.run(match, player, opponent, games)
+                return_hash.merge!(score_hash)
 
                 # check if match is over
                 if return_hash[:winner]
@@ -124,37 +126,37 @@ module RPS
       end
     end
 
-    def self.get_score_for(games, player, opponent, return_hash)
-      player_score   = 0
-      opponent_score = 0
+    # def self.get_score_for(games, player, opponent, return_hash)
+    #   player_score   = 0
+    #   opponent_score = 0
 
-      games.each do |game|
-        games.moves.each do |move|
-          player_move = move if move.player_id == player.player_id
-          opponent_move = move if move.player_id == opponent.player_id
-        end
-        result = player_move.wins?(opponent_move)
-        if result == true
-          player_score += 1
-        elsif result == false
-          opponent_score += 1
-        end
-      end
+    #   games.each do |game|
+    #     games.moves.each do |move|
+    #       player_move = move if move.player_id == player.player_id
+    #       opponent_move = move if move.player_id == opponent.player_id
+    #     end
+    #     result = player_move.wins?(opponent_move)
+    #     if result == true
+    #       player_score += 1
+    #     elsif result == false
+    #       opponent_score += 1
+    #     end
+    #   end
 
-      # player.score= player_score
-      # opponent.score= opponent_score
+    #   # player.score= player_score
+    #   # opponent.score= opponent_score
 
-      return_hash[:player][:score] = player_score
-      return_hash[:opponent][:score] = opponent_score
+    #   return_hash[:player][:score] = player_score
+    #   return_hash[:opponent][:score] = opponent_score
 
-      if player_score >= 3 && player_score > opponent_score
-        return_hash[:winner] = player.to_json_hash
-      elsif opponent_score >= 3 && opponent_score > player_score
-        return_hash[:winner] = opponent.to_json_hash
-      end
-      # return_hash[:player  ] = player
-      # return_hash[:opponent] = opponent
-      return_hash
-    end
+    #   if player_score >= 3 && player_score > opponent_score
+    #     return_hash[:winner] = player.to_json_hash
+    #   elsif opponent_score >= 3 && opponent_score > player_score
+    #     return_hash[:winner] = opponent.to_json_hash
+    #   end
+    #   # return_hash[:player  ] = player
+    #   # return_hash[:opponent] = opponent
+    #   return_hash
+    # end
   end
 end
