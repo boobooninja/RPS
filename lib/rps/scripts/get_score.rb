@@ -8,7 +8,7 @@ module RPS
       games ||= match.games
 
       games.each do |game|
-        games.moves.each do |move|
+        game.moves.each do |move|
           player_move = move if move.player_id == player.player_id
           opponent_move = move if move.player_id == opponent.player_id
         end
