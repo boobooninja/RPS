@@ -28,9 +28,18 @@ div.panel
   .main
     max-width: 90%
 
-div.panel.your-move
-  background-color: green
-
-div.panel.their-move
-  background-color: orange
+div.panel.matches
+  ul
+    border-radius: 15px
+    border: none
+    .title
+      border-radius: 15px 15px 0 0
+    li
+      margin-top: 2px
+  &.your-move
+    background-color: green
+  &.their-move
+    background-color: orange
+  &.button
+    bottom-margin: 3px
 

@@ -32,10 +32,22 @@ div.panel {
   /* line 28, ../scss/rps.sass */
   .main {
     max-width: 90%; } }
-/* line 31, ../scss/rps.sass */
-div.panel.your-move {
+/* line 32, ../scss/rps.sass */
+div.panel.matches ul {
+  border-radius: 15px;
+  border: none; }
+  /* line 35, ../scss/rps.sass */
+  div.panel.matches ul .title {
+    border-radius: 15px 15px 0 0; }
+  /* line 37, ../scss/rps.sass */
+  div.panel.matches ul li {
+    margin-top: 2px; }
+/* line 39, ../scss/rps.sass */
+div.panel.matches.your-move {
   background-color: green; }
-
-/* line 34, ../scss/rps.sass */
-div.panel.their-move {
+/* line 41, ../scss/rps.sass */
+div.panel.matches.their-move {
   background-color: orange; }
+/* line 43, ../scss/rps.sass */
+div.panel.matches.button {
+  bottom-margin: 3px; }
