@@ -1,6 +1,6 @@
 <div data-equalizer>
   <div class="columns large-6">
-    <div class="callout panel full-panel your-move matches" data-equalizer-watch>
+    <div class="panel full-panel your-move matches" data-equalizer-watch>
       <ul class ='pricing-table your-move'>
         <li class='title'>Your turn!</li>
         <% @matches.each do |match| %>
@@ -15,7 +15,7 @@
 
         <li>
           <form action="/api/players/<%=@player.player_id%>/matches" method="post">
-            <button type='submit' class="button expand start-new-game bullet-item">Start new match</button>
+            <button type='submit' class="button expand start-new-game price">Start new match</button>
           </form>
         </li>
       </ul>
@@ -23,7 +23,7 @@
   </div>
 
   <div class="columns large-6">
-    <div class="callout panel their-move full-panel matches" data-equalizer-watch>
+    <div class="panel their-move full-panel matches" data-equalizer-watch>
       <ul class ="pricing-table their-move">
         <li class='title'>Their turn!</li>
         <!-- Their Move Games Here -->

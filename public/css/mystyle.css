@@ -25,7 +25,7 @@ div.panel {
   width: 82.5%; }
   /* line 23, ../scss/rps.sass */
   div.panel.full-panel {
-    padding: none;
+    padding: 3px;
     width: 100%; }
 
 @media all and (max-width: 64rem) {
@@ -33,17 +33,9 @@ div.panel {
   .main {
     max-width: 90%; } }
 /* line 31, ../scss/rps.sass */
-div.callout.panel.your-move {
+div.panel.your-move {
   background-color: green; }
-  /* line 33, ../scss/rps.sass */
-  div.callout.panel.your-move ul {
-    width: 100%;
-    margin: 1px; }
 
-/* line 37, ../scss/rps.sass */
-div.callout.panel.their-move {
+/* line 34, ../scss/rps.sass */
+div.panel.their-move {
   background-color: orange; }
-  /* line 39, ../scss/rps.sass */
-  div.callout.panel.their-move ul {
-    width: 100%;
-    margin: 1px; }
