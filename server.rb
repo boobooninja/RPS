@@ -204,7 +204,8 @@ post '/api/players/:player_id/matches' do |player_id|
       @opponent = @match.opponent_for(@player)
 
       # redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
-      json_hash.merge({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => @opponent.to_json_hash})
+
+      json_hash.merge!({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => @opponent.to_json_hash})
     else
       result  = RPS::CreateMatch.run(params, @player)
       @errors.push(result[:errors]).flatten!
@@ -214,7 +215,7 @@ post '/api/players/:player_id/matches' do |player_id|
         @game  = result[:game]
 
         # redirect to "/players/#{@player.player_id}/matches/#{@match.match_id}"
-        json_hash.merge({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => nil})
+        json_hash.merge!({:success? => true, :match => @match.to_json_hash, :game => @game.to_json_hash, :opponent => nil})
       else
         # erb :home
       end
