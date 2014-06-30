@@ -5,6 +5,7 @@ require 'digest'
 require 'time'
 require 'pg'
 require 'securerandom'
+require 'json'
 
 require_relative 'rps/db.rb'
 require_relative 'rps/session.rb'
