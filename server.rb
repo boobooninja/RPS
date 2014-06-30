@@ -175,7 +175,7 @@ get '/api/players/:player_id/matches' do |player_id|
   JSON(json_hash)
 end
 
-post 'api/players/:player_id/matches' do |player_id|
+post '/api/players/:player_id/matches' do |player_id|
   result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
   json_hash = {:errors => @errors}
