@@ -12,8 +12,8 @@ module RPS
         end
 
         unless member
-          match = RPS.db.update('matches', {'started_at' => Time.now}).first
-          playermatches = RPS.db.create('playermatches', {'match_id' => match.match_id, 'player_id' => player.player_id})
+          match = RPS.db.update('matches', ['match_id', match.match_id], {'started_at' => Time.now}).first
+          playermatches = RPS.db.create_playermatches('playermatches', {'match_id' => match.match_id, 'player_id' => player.player_id})
           game  = RPS.db.update('games', ['game_id', game.game_id], {'started_at' => Time.now})
 
           { :success? => true, :match => match, :game => game, :errors => [ ] }
