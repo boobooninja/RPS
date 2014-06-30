@@ -1,17 +1,16 @@
 <div class="game-panel">
-  <!-- This is where game play happens -->
+  <% yield %>
 </div>
 
 <div id='templates'>
   <script type='text/template' class='play-move'>
-    <ul class="small-block-grid-3">
-      <li class="callout panel text-center rock">ROCK</li>
-      <li class="callout panel text-center paper">PAPER</li>
-      <li class="callout panel text-center scissors">SCISSORS</li>
-    </ul>
+    <%= erb :_play_move %>
   </script>
   <script type='text/template' class='wait-for-opponent'>
-    <h3>Waiting for opponent</h3>
+    <%= erb :_wait_for_opponent %>
+  </script>
+  <script type='text/template' class='game-animation'>
+    <%= erb :_game_animation %>
   </script>
 </div>
  

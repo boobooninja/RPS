@@ -10,7 +10,7 @@ module RPS
           player = RPS.db.find('players',{:player_id => session.player_id})
           { :success? => true, :player => player, :errors => [] }
         else # return a error
-          { :success? => false, :errors => ['invalid session'] }
+          { :success? => false, :errors => ['player no longer exists'] }
         end
       else
         { :success? => false, :errors => ['invalid session'] }

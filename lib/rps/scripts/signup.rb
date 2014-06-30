@@ -1,7 +1,7 @@
 module RPS
   class SignUp
     def self.run(params) # :name = params[:name], :username => params[:username], :password => params[:password]
-      name     = params[:name]
+      name     = params[:FirstName]
       username = params[:username]
       password = params[:password]
 

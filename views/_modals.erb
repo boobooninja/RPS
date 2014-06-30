@@ -1,6 +1,6 @@
 <% unless @player %>
   <div id="loginModal" class="tiny reveal-modal" data-reveal>
-    <div class="container panel">
+    <div class="container panel modal">
       <h3 class="text-center">Login</h3>
       </br>
       <form autocomplete="on" action="/login" method="post">
@@ -11,8 +11,8 @@
     </div>
   </div>
 
-  <div id="signUpModal" class="small reveal-modal" data-reveal>
-    <div class="container panel">
+  <div id="signUpModal" class="small reveal-modal" padding='none' data-reveal>
+    <div class="container panel modal">
       <h3 class="text-center">Sign Up for RPS Extreme!!!</h3>
       </br>
       <form autocomplete="on" autocorrect="on" autocapitalize="off" action="/signup" method="post">
@@ -31,7 +31,7 @@
 <% else %>
 
   <div id="logoutModal" class="tiny reveal-modal" data-reveal>
-    <div class="row panel">
+    <div class="row panel modal">
       <p class="text-center">Are you sure you want to log out?</p>
       <form action="/logout" method="post">
         <button type="submit" name="submit" class="button radius small columns medium-4 medium-offset-4">OK</button>

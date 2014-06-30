@@ -1,20 +1,10 @@
-<div id="main" class="row">
-  <div class="large-12 medium-12 column">
+<div class="columns large-6 callout panel row your-move">
+  <h3 class="text-center">Your turn!</h3>
+  <div class="your-move" your-games></div>
+  <button class="your-move">Start new game</button>
+</div>
 
-    <%= erb :_errors %>
-
-    <div class="row center">
-      <div class="large-12 medium-12 column">
-        <h2>HOME</h2>
-        <h3>Name: <%= @player.to_json_hash %></h3>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="large-12  medium-12 column">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quasi, voluptates voluptatibus quo ex ipsum aliquam minus officia culpa, necessitatibus, quaerat, dolorum magnam! Eos aliquam, perspiciatis repudiandae ab ad ratione.</p>
-      </div>
-    </div>
-
-  </div>
+<div class="columns large-6 callout panel their-move row">
+  <h3 class="text-center">Their turn!</h3>
+  <div class="their-move" their-games></div>
 </div>

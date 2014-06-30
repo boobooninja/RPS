@@ -11,7 +11,7 @@ set :bind, '0.0.0.0' # Vagrant fix
 set :port, 9494
 
 get '/' do
-  result = RPS::ValidateSession.run(params)
+  result = RPS::ValidateSession.run(session)
   if result[:success?]
     @errors = result[:errors]
     @player = result[:player]
@@ -22,7 +22,7 @@ get '/' do
 end
 
 post '/signup' do
-  result = RPS::ValidateSession.run(params)
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
@@ -51,12 +51,12 @@ post '/signup' do
 end
 
 post '/login' do
-  result = RPS::ValidateSession.run(params)
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
     @player = result[:player]
-    erb :home
+    redirect "/home"
   else
     result = RPS::SignIn.run(params)
     @errors.push(result[:errors]).flatten
@@ -64,27 +64,28 @@ post '/login' do
     if result[:success?]
       session[:rps_session_id] = result[:rps_session_id]
       @player = result[:player]
-      erb :home
+
+      redirect "/home"
     else
-      erb :login
+      erb :index
     end
   end
 end
 
-get '/signout' do
-  result = RPS::DeleteSession.run(params)
+get '/logout' do
+  result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
     session[:rps_session_id] = nil
-    erb :main
+    erb :index
   else
-    erb :main
+    erb :index
   end
 end
 
-get '/players/:player_id/home' do |player_id|
-  result = RPS::ValidateSession.run(params)
+get '/home' do
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
@@ -92,12 +93,12 @@ get '/players/:player_id/home' do |player_id|
     @player = result[:player]
     erb :home
   else
-    erb :login
+    erb :index
   end
 end
 
-get '/matches/:match_id/games/:game_id' do |match_id,game_id|
-  result = RPS::ValidateSession.run(params)
+get '/matches/:match_id/games/:game_id ' do |match_id,game_id|
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
@@ -112,7 +113,7 @@ get '/matches/:match_id/games/:game_id' do |match_id,game_id|
 end
 
 post '/matches/:match_id/games/:game_id' do |match_id,game_id|
-  result = RPS::ValidateSession.run(params)
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
@@ -140,7 +141,7 @@ end
 #-------- JSON API routes -----------
 
 get '/api/players/:player_id/matches' do |player_id|
-  result = RPS::ValidateSession.run(params)
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   matches_array = []
@@ -158,8 +159,8 @@ get '/api/players/:player_id/matches' do |player_id|
   JSON(json_hash)
 end
 
-post '/players/:player_id/matches' do |player_id|
-  result = RPS::ValidateSession.run(params)
+post '/players/:username/matches' do |username|
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
   json_hash = {:errors => @errors}
 
@@ -180,7 +181,7 @@ post '/players/:player_id/matches' do |player_id|
 end
 
 get '/matches/:match_id/history' do |match_id|
-  result = RPS::ValidateSession.run(params)
+  result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
   json_hash = {:errors => @errors}
 
