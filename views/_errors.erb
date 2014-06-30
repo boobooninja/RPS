@@ -1,11 +1,9 @@
 <% if @errors %>
   <div class="row">
-  <div class="column">
+  <div class="columns small-12">
     <ul>
       <% @errors.each do |error| %>
-        <li>
-          <span><%= error %></span>
-        </li>
+        <li><%= error %></li>
       <% end %>
     </ul>
   </div>
