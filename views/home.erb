@@ -1,7 +1,16 @@
-<div class="columns large-6 callout panel row your-move">
+<div class="columns large-6 callout panel row your-move" data-equalizer>
   <h3 class="text-center">Your turn!</h3>
-  <ul class ="your-move">
-    <!-- Your Move Games Here -->
+  <ul class ="your-move" data-equalizer-watch>
+    <% @matches.each do |match| %>
+      <li>
+        <form action='/players/<%=@player.player_id%>/matches/<%=match.match_id%>' method="post">
+          <button class="button expand start-new-game">
+            <%= match.get_opponent(@player) %>
+          </button>
+        </form>
+      </li>
+    <% end %>
+
     <li>
     <form action="/api/players/<%=@player.player_id%>/matches" method="post">
         <button class="button expand start-new-game">Start new match</button>
@@ -10,7 +19,7 @@
   </ul>
 </div>
 
-<div class="columns large-6 callout panel their-move row">
+<div class="columns large-6 callout panel their-move row" data-equalizer-watch>
   <h3 class="text-center">Their turn!</h3>
   <ul class ="their-move">
     <!-- Their Move Games Here -->

@@ -5,7 +5,7 @@
       <%= "Match: #{@match[:match_id]}" %>
       </br>
       <small>
-        <%= "Started at: <span class="match_started_at">#{@match[:started_at] || "Waiting on other player"}" %>
+        Started at: <span class="match_started_at"><%= @match[:started_at] || "Waiting on other player" %>
       </small>
     </h4>
   </div>

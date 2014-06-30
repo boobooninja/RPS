@@ -86,6 +86,9 @@ get '/players/:player_id' do |player_id|
 
   if result[:success?]
     @player = result[:player]
+    @matches = @player.matches
+    @matches.sort
+    
     erb :home
   else
     erb :index
@@ -100,6 +103,8 @@ get '/players/:player_id/matches/:match_id' do |player_id,match_id|
     @player = result[:player]
     @match  = @player.get_match(match_id)
     @game   = @match.get_current_game
+    players @match.players
+    @opponent = players[0] == @player ? players[1] : players[0]
 
     erb :game
   else
