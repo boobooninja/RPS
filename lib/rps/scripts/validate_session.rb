@@ -7,7 +7,7 @@ module RPS
         session = RPS.db.find('sessions', {:session_id => rps_session_id}).first
 
         if session # get player
-          player = RPS.db.find('players',{:player_id => session.player_id})
+          player = RPS.db.find('players',{:player_id => session.player_id}).first
           { :success? => true, :player => player, :errors => [] }
         else # return a error
           { :success? => false, :errors => ['player no longer exists'] }

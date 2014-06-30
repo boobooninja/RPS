@@ -1,10 +1,18 @@
 <div class="columns large-6 callout panel row your-move">
   <h3 class="text-center">Your turn!</h3>
-  <div class="your-move" your-games></div>
-  <button class="your-move">Start new game</button>
+  <ul class ="your-move">
+    <!-- Your Move Games Here -->
+    <li>
+    <form action="/player/<%="#{@player[:player_id]}"%>/matches" method="post">
+        <button class="button expand start-new-game">Start new match</button>
+      </form>
+    </li>
+  </ul>
 </div>
 
 <div class="columns large-6 callout panel their-move row">
   <h3 class="text-center">Their turn!</h3>
-  <div class="their-move" their-games></div>
+  <ul class ="their-move">
+    <!-- Their Move Games Here -->
+  </ul>
 </div>

@@ -1,5 +1,9 @@
 <div class="game-panel">
-  <% yield %>
+  <% if statement %>
+    <% some code %>
+  <% else %>
+    <% other code %>
+  <% end %>
 </div>
 
 <div id='templates'>
@@ -12,6 +16,46 @@
   <script type='text/template' class='game-animation'>
     <%= erb :_game_animation %>
   </script>
+<div class="row callout panel">
+  <%# Row 1 %>
+  <div class="columns small-4 text-left">
+    <h4 class="subheader">
+      <%= "Match: #{@match[:match_id]}" %>
+      </br>
+      <small>
+        <%= "Started at: <span class="match_started_at">#{@match[:started_at] || "Waiting on other player"}" %>
+      </small>
+    </h4>
+  </div>
+  <div class="columns small-4 text-center">
+    <h3><a href="#" data-reveal-id="historyModal">History</a></h3> 
+  </div>
+  <div class="columns small-4 text-right">
+    <h4 class="subheader">
+      <%= "Game: #{@games.size + 1}" %>
+      </br>
+      <small>
+        <%= "Started at: #{@game[:started_at]}" %>
+      </small>
+    </h4>
+  </div>
+  <%# Row 2 %>
+  <div class="columns small-6 text-left">
+    <h2 class="subheader">
+      <%= "#{@opponent[:name]} : #{@opponent[:score]}" %>
+    </h2>
+  </div>
+  <div class="columns small-6 text-right">
+    <h2 class="subheader">
+      <%= "#{@player[:name]} : #{@player[:score]}" %>
+    </h2>
+  </div>
+</div>
+</br>
+
+<div class="row callout panel" id="gameplay">
+  <!-- blank div for templating -->
+</div>
 </div>
  
       <script type="text/javascript">

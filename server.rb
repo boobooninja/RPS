@@ -16,7 +16,7 @@ get '/' do
 
   if result[:success?]
     @player = result[:player]
-    redirect to "player/#{@player.id}"
+    redirect to "player/#{@player.player_id}"
   else
     erb :index
   end
@@ -28,7 +28,7 @@ post '/signup' do
 
   if result[:success?]
     @player = result[:player]
-    redirect to "player/#{@player.id}"
+    redirect to "player/#{@player.player_id}"
   else
     result = RPS::SignUp.run(params)
     @errors.push(result[:errors]).flatten
@@ -40,7 +40,7 @@ post '/signup' do
       if result[:success?]
         session[:rps_session_id] = result[:rps_session_id]
         @player = result[:player]
-        redirect to "player/#{@player.id}"
+        redirect to "player/#{@player.player_id}"
       else
         erb :index
       end
@@ -56,7 +56,7 @@ post '/login' do
 
   if result[:success?]
     @player = result[:player]
-    redirect to "player/#{@player.id}"
+    redirect to "player/#{@player.player_id}"
   else
     result = RPS::SignIn.run(params)
     @errors.push(result[:errors]).flatten
@@ -65,14 +65,14 @@ post '/login' do
       session[:rps_session_id] = result[:rps_session_id]
       @player = result[:player]
 
-      redirect to "player/#{@player.id}"
+      redirect to "player/#{@player.player_id}"
     else
       erb :index
     end
   end
 end
 
-get '/logout' do
+post '/logout' do
   result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
