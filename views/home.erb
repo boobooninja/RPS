@@ -5,7 +5,11 @@
       <li>
         <form action='/players/<%=@player.player_id%>/matches/<%=match.match_id%>' method="post">
           <button class="button expand">
-            <%= match.opponent_for(@player).name %>
+            <% if opponent = match.opponent_for(@player) %>
+              <%= opponent.name %>
+            <% else %>
+              No opponent
+            <% end %>
           </button>
         </form>
       </li>
