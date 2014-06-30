@@ -12,10 +12,11 @@ set :port, 9494
 
 get '/' do
   result = RPS::ValidateSession.run(session)
+  @errors = result[:errors]
+
   if result[:success?]
-    @errors = result[:errors]
     @player = result[:player]
-    erb :home
+    redirect to "player/#{@player.id}"
   else
     erb :index
   end
@@ -26,9 +27,8 @@ post '/signup' do
   @errors = result[:errors]
 
   if result[:success?]
-    @errors.push('Please logout first before signing up')
     @player = result[:player]
-    erb :home
+    redirect to "player/#{@player.id}"
   else
     result = RPS::SignUp.run(params)
     @errors.push(result[:errors]).flatten
@@ -40,12 +40,12 @@ post '/signup' do
       if result[:success?]
         session[:rps_session_id] = result[:rps_session_id]
         @player = result[:player]
-        erb :home
+        redirect to "player/#{@player.id}"
       else
-        erb :login
+        erb :index
       end
     else
-      erb :login
+      erb :index
     end
   end
 end
@@ -56,7 +56,7 @@ post '/login' do
 
   if result[:success?]
     @player = result[:player]
-    redirect "/home"
+    redirect to "player/#{@player.id}"
   else
     result = RPS::SignIn.run(params)
     @errors.push(result[:errors]).flatten
@@ -65,7 +65,7 @@ post '/login' do
       session[:rps_session_id] = result[:rps_session_id]
       @player = result[:player]
 
-      redirect "/home"
+      redirect to "player/#{@player.id}"
     else
       erb :index
     end
@@ -76,20 +76,15 @@ get '/logout' do
   result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
-  if result[:success?]
-    session[:rps_session_id] = nil
-    erb :index
-  else
-    erb :index
-  end
+  session.clear
+  erb :index
 end
 
-get '/home' do
+get '/player/:player_id' do |player_id|
   result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
   if result[:success?]
-    @errors.push(result[:errors]).flatten
     @player = result[:player]
     erb :home
   else
@@ -97,22 +92,22 @@ get '/home' do
   end
 end
 
-get '/matches/:match_id/games/:game_id ' do |match_id,game_id|
-  result = RPS::ValidateSession.run(session)
-  @errors = result[:errors]
+# get '/player/:player_id/matches/:match_id' do |player_id,match_id|
+#   result = RPS::ValidateSession.run(session)
+#   @errors = result[:errors]
 
-  if result[:success?]
-    @player = result[:player]
-    @match  = @player.get_match(match_id)
-    @game   = @match.get_game(game_id)
+#   if result[:success?]
+#     @player = result[:player]
+#     @match  = @player.get_match(match_id)
+#     @game   = @match.get_current_game
 
-    erb :game
-  else
-    erb :games
-  end
-end
+#     erb :game
+#   else
+#     erb :home
+#   end
+# end
 
-post '/matches/:match_id/games/:game_id' do |match_id,game_id|
+get '/player/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
   result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
 
@@ -125,6 +120,36 @@ post '/matches/:match_id/games/:game_id' do |match_id,game_id|
     @errors.push(result[:errors]).flatten
 
     if result[:success]
+      @player   = result[:player]
+      @opponent = result[:opponent]
+      @match    = result[:match]
+      @game     = result[:game]
+      @winner   = result[:winner]
+    end
+
+    erb :game
+  else
+    erb :login
+  end
+end
+
+post '/player/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
+  result = RPS::ValidateSession.run(session)
+  @errors = result[:errors]
+
+  if result[:success?]
+# TODO refactor
+# get player, match, game like method above then
+# have a simple Play script that takes those and
+# validates the play
+    result = RPS::Play.run(params)
+    @errors.push(result[:errors]).flatten
+
+    if result[:success]
+      unless winner
+        create new_game
+      end
+
       @player   = result[:player]
       @opponent = result[:opponent]
       @match    = result[:match]
