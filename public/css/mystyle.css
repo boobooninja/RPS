@@ -38,16 +38,14 @@ div.panel.matches ul {
   border: none; }
   /* line 35, ../scss/rps.sass */
   div.panel.matches ul .title {
-    border-radius: 15px 15px 0 0; }
-  /* line 37, ../scss/rps.sass */
-  div.panel.matches ul li {
-    margin-top: 2px; }
-/* line 39, ../scss/rps.sass */
+    border-radius: 15px 15px 0 0;
+    -webkit-border-radius: 15px 15px 0 0; }
+/* line 38, ../scss/rps.sass */
 div.panel.matches.your-move {
   background-color: green; }
-/* line 41, ../scss/rps.sass */
+/* line 40, ../scss/rps.sass */
 div.panel.matches.their-move {
   background-color: orange; }
-/* line 43, ../scss/rps.sass */
+/* line 42, ../scss/rps.sass */
 div.panel.matches.button {
   bottom-margin: 3px; }
