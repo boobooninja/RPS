@@ -13,11 +13,17 @@ module RPS
     end
 
     def players
-      @players ||= TM.db.find('players, playermatches', {'match_id' => @match_id})
+      @players ||= RPS.db.find('players, playermatches', {'match_id' => @match_id})
+    end
+
+    def opponent_for(player)
+      players.each do |p|
+        return p if p.player_id != player.player_id
+      end
     end
 
     def games
-      @games ||= TM.db.find('games', {'match_id' => @match_id})
+      @games ||= RPS.db.find('games', {'match_id' => @match_id})
     end
 
     def get_game(game_id)
