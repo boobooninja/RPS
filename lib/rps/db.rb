@@ -3,7 +3,8 @@ module RPS
     def initialize(dbname = 'rps')
       @conn = PG.connect(host: 'localhost', dbname: dbname)
 
-      build_tables
+      # drop_tables
+      # build_tables
     end
 
     def build_tables
