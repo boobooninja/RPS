@@ -19,7 +19,7 @@ module RPS
     def opponent_for(player)
       opponent = nil
 
-      players.each do |p|
+      self.players.each do |p|
         if p.player_id != player.player_id
           opponent = p
         end
