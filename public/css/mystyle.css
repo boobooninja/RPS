@@ -24,7 +24,7 @@ div.panel {
   margin-bottom: 1rem;
   width: 82.5%; }
   /* line 23, ../scss/rps.sass */
-  div.panel.modal {
+  div.panel.full-panel {
     padding: none;
     width: 100%; }
 
@@ -35,7 +35,15 @@ div.panel {
 /* line 31, ../scss/rps.sass */
 div.callout.panel.your-move {
   background-color: green; }
+  /* line 33, ../scss/rps.sass */
+  div.callout.panel.your-move ul {
+    width: 100%;
+    margin: 1px; }
 
-/* line 34, ../scss/rps.sass */
+/* line 37, ../scss/rps.sass */
 div.callout.panel.their-move {
   background-color: orange; }
+  /* line 39, ../scss/rps.sass */
+  div.callout.panel.their-move ul {
+    width: 100%;
+    margin: 1px; }
