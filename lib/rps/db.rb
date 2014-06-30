@@ -75,7 +75,11 @@ module RPS
         command += " WHERE "
         args_ary = [ ]
         args.each do |k,v|
-          args_ary.push("#{k} = '#{v}'")
+          if v.nil?
+            args_ary.push("#{k} IS NULL")
+          else
+            args_ary.push("#{k} = '#{v}'")
+          end
         end
 
         command += args_ary.join(" AND ")
