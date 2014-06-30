@@ -88,7 +88,6 @@ get '/players/:player_id/home' do |player_id|
   @errors = result[:errors]
 
   if result[:success?]
-    @errors.push(result[:errors]).flatten
     @player = result[:player]
     erb :home
   else
