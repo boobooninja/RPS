@@ -8,15 +8,21 @@ module RPS
       games ||= match.games
 
       games.each do |game|
-        games.moves.each do |move|
-          player_move = move if move.player_id == player.player_id
+        player_move   = nil
+        opponent_move = nil
+
+        game.moves.each do |move|
+          player_move   = move if move.player_id == player.player_id
           opponent_move = move if move.player_id == opponent.player_id
         end
-        result = player_move.wins?(opponent_move)
-        if result == true
-          player_score += 1
-        elsif result == false
-          opponent_score += 1
+
+        if player_move && opponent_move
+          result = player_move.wins?(opponent_move)
+          if result == true
+            player_score += 1
+          elsif result == false
+            opponent_score += 1
+          end
         end
       end
 
