@@ -17,9 +17,14 @@ module RPS
     end
 
     def opponent_for(player)
+      opponent = nil
+
       players.each do |p|
-        return p if p.player_id != player.player_id
+        if p.player_id != player.player_id
+          opponent = p
+        end
       end
+      opponent
     end
 
     def games
