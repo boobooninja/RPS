@@ -87,7 +87,6 @@ get '/players/:player_id' do |player_id|
   if result[:success?]
     @player = result[:player]
     @matches = @player.matches
-    
     erb :home
   else
     erb :index
