@@ -92,78 +92,69 @@ get '/player/:player_id' do |player_id|
   end
 end
 
-# get '/player/:player_id/matches/:match_id' do |player_id,match_id|
+get '/player/:player_id/matches/:match_id' do |player_id,match_id|
+  result = RPS::ValidateSession.run(session)
+  @errors = result[:errors]
+
+  if result[:success?]
+    @player = result[:player]
+    @match  = @player.get_match(match_id)
+    @game   = @match.get_current_game
+
+    erb :game
+  else
+    erb :home
+  end
+end
+
+# get '/player/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
 #   result = RPS::ValidateSession.run(session)
 #   @errors = result[:errors]
 
 #   if result[:success?]
-#     @player = result[:player]
-#     @match  = @player.get_match(match_id)
-#     @game   = @match.get_current_game
+# # TODO refactor
+# # get player, match, game like method above then
+# # have a simple Play script that takes those and
+# # validates the play
+#     result = RPS::Play.run(params)
+#     @errors.push(result[:errors]).flatten
+
+#     if result[:success]
+#       @player   = result[:player]
+#       @opponent = result[:opponent]
+#       @match    = result[:match]
+#       @game     = result[:game]
+#       @winner   = result[:winner]
+#     end
 
 #     erb :game
 #   else
-#     erb :home
+#     erb :login
 #   end
 # end
 
-get '/player/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
-  result = RPS::ValidateSession.run(session)
-  @errors = result[:errors]
-
-  if result[:success?]
-# TODO refactor
-# get player, match, game like method above then
-# have a simple Play script that takes those and
-# validates the play
-    result = RPS::Play.run(params)
-    @errors.push(result[:errors]).flatten
-
-    if result[:success]
-      @player   = result[:player]
-      @opponent = result[:opponent]
-      @match    = result[:match]
-      @game     = result[:game]
-      @winner   = result[:winner]
-    end
-
-    erb :game
-  else
-    erb :login
-  end
-end
-
-post '/player/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
-  result = RPS::ValidateSession.run(session)
-  @errors = result[:errors]
-
-  if result[:success?]
-# TODO refactor
-# get player, match, game like method above then
-# have a simple Play script that takes those and
-# validates the play
-    result = RPS::Play.run(params)
-    @errors.push(result[:errors]).flatten
-
-    if result[:success]
-      unless winner
-        create new_game
-      end
-
-      @player   = result[:player]
-      @opponent = result[:opponent]
-      @match    = result[:match]
-      @game     = result[:game]
-      @winner   = result[:winner]
-    end
-
-    erb :game
-  else
-    erb :login
-  end
-end
 
 #-------- JSON API routes -----------
+
+post '/api/player/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
+  result = RPS::ValidateSession.run(session)
+  @errors = result[:errors]
+
+  if result[:success?]
+# TODO refactor
+# get player, match, game like method above then
+# have a simple Play script that takes those and
+# validates the play
+    result = RPS::Play.run(params)
+
+    result[:errors].push(@errors).flatten
+  else
+    result = {:errors => @errors}
+  end
+
+  JSON(result)
+end
+
 
 get '/api/players/:player_id/matches' do |player_id|
   result = RPS::ValidateSession.run(session)
@@ -184,7 +175,7 @@ get '/api/players/:player_id/matches' do |player_id|
   JSON(json_hash)
 end
 
-post '/players/:username/matches' do |username|
+post 'api/players/:player_id/matches' do |player_id|
   result = RPS::ValidateSession.run(session)
   @errors = result[:errors]
   json_hash = {:errors => @errors}
@@ -197,12 +188,15 @@ post '/players/:username/matches' do |username|
 
     if result[:success?]
       @match = result[:match]
+      @game  = result[:game]
 
-      json_hash[:match] = @match.to_json_hash
+      redirect to "/player/#{@player.player_id}/matches/#{@match.match_id}"
+    else
+      erb :home
     end
+  else
+    erb :index
   end
-
-  JSON(json_hash)
 end
 
 get '/matches/:match_id/history' do |match_id|
