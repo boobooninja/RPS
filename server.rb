@@ -98,10 +98,11 @@ get '/players/:player_id/matches/:match_id' do |player_id,match_id|
   @errors = result[:errors]
 
   if result[:success?]
-    @player = result[:player]
-    @match  = @player.get_match(match_id)
-    @game   = @match.get_current_game
+    @player   = result[:player]
+    @match    = @player.get_match(match_id)
+    @game     = @match.get_current_game
     @opponent = @match.opponent_for(@player)
+    @score    = RPS::GetScore.run(@match, @player, @opponent)
 
     erb :game
   else
