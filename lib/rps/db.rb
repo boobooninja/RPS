@@ -103,6 +103,29 @@ module RPS
       execute_the(command, sklass)
     end
 
+    def find_playermatches(sklass, args)
+      command = "SELECT * FROM #{sklass}"
+
+      unless args.empty?
+        command += " WHERE "
+        args_ary = [ ]
+        args.each do |k,v|
+          if v.nil?
+            args_ary.push("#{k} IS NULL")
+          else
+            args_ary.push("#{k} = #{v}")
+          end
+        end
+
+        command += args_ary.join(" AND ")
+      end
+
+      command += ";"
+
+      execute_the(command, sklass)
+    end
+
+
     ### UPDATE ###
 
     def update(sklass, id_array, args)

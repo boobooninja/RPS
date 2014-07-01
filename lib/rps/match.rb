@@ -13,7 +13,9 @@ module RPS
     end
 
     def players
-      @players ||= RPS.db.find('players, playermatches', {'match_id' => @match_id})
+      @players ||= RPS.db.find_playermatches('players, playermatches',
+        { 'players.player_id' => 'playermatches.player_id',
+          'match_id' => @match_id })
     end
 
     def opponent_for(player)

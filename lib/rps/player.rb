@@ -19,11 +19,15 @@ module RPS
     end
 
     def get_match(match_id)
-      RPS.db.find('matches, playermatches',{'matches.match_id' => match_id, 'playermatches.player_id' => @player_id}).first
+      RPS.db.find_playermatches('matches, playermatches',
+        { 'matches.match_id' => match_id,
+          'player_id' => @player_id}).first
     end
 
     def matches
-      @matches ||= RPS.db.find('matches, playermatches', {'player_id' => @player_id})
+      @matches ||= RPS.db.find_playermatches('matches, playermatches',
+        { 'playermatches.match_id' => 'matches.match_id',
+          'player_id' => @player_id})
     end
 
     def games_for_match(match_id)

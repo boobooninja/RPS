@@ -1,52 +1,30 @@
 module RPS
   class Play
-    def self.run(params) # :game_id => 123, :player => player, :action => 'rock'
-      match_id = params[:match_id]
-      game_id  = params[:game_id]
-      player   = params[:player]
-      action   = params[:action]
+    def self.run(play_hash) # :game_id => 123, :player => player, :action => 'rock'
+      match_id = play_hash[:match_id]
+      game_id  = play_hash[:game_id]
+      player   = play_hash[:player]
+      action   = play_hash[:action]
 
       return_hash = { :player => player.to_json_hash, :errors => [] }
 
-      # get matches
-      matches = player.matches
-      # matches = RPS.db.find('matches, playermatches',{'player_id' => player.id})
-
       # get match
-      match = nil
-      matches.each do |m|
-        match = m if m.match_id == match_id
-      end
+      match = player.get_match(match_id)
 
       if match
         return_hash[:match] = match.to_json_hash
 
         # get opponent
-        opponent = nil
-        match.players.each do |p|
-          opponent = p if p.player_id != player.player_id
-        end
+        opponent = match.opponent_for(player)
 
         if opponent
           return_hash[:opponent] = opponent.to_json_hash
         end
 
-        # get games
-        games = match.games
-        # games = RPS.db.find('games',{'match_id' => match.id})
-
         # get game
-        game = nil
-        games.each do |g|
-          game = g if g.game_id == game_id
-        end
+        game = match.get_current_game
 
         if game
-          # return_hash[:game] = game
-          # get moves
-          # moves = game.moves
-          # moves = RPS.db.find('moves',{'game_id' => game.id})
-
           players_moves   = player.moves_for_game(game.game_id)
           opponents_moves = opponent.moves_for_game(game.game_id)
 
@@ -117,49 +95,11 @@ module RPS
     def self.create_move(game, player, action, response_hash)
       new_move = RPS.db.create('moves', {'game_id' => game.game_id, 'player_id' => player.player_id, 'action' => action}).first
       if new_move
-        # response_hash[:success?] = true
-        # response_hash[:move]     = new_move
-        # response_hash
         true
       else
-        # response_hash[:success?] = false
         response_hash[:errors].push('could not create the move')
-        # response_hash
         false
       end
     end
-
-    # def self.get_score_for(games, player, opponent, return_hash)
-    #   player_score   = 0
-    #   opponent_score = 0
-
-    #   games.each do |game|
-    #     games.moves.each do |move|
-    #       player_move = move if move.player_id == player.player_id
-    #       opponent_move = move if move.player_id == opponent.player_id
-    #     end
-    #     result = player_move.wins?(opponent_move)
-    #     if result == true
-    #       player_score += 1
-    #     elsif result == false
-    #       opponent_score += 1
-    #     end
-    #   end
-
-    #   # player.score= player_score
-    #   # opponent.score= opponent_score
-
-    #   return_hash[:player][:score] = player_score
-    #   return_hash[:opponent][:score] = opponent_score
-
-    #   if player_score >= 3 && player_score > opponent_score
-    #     return_hash[:winner] = player.to_json_hash
-    #   elsif opponent_score >= 3 && opponent_score > player_score
-    #     return_hash[:winner] = opponent.to_json_hash
-    #   end
-    #   # return_hash[:player  ] = player
-    #   # return_hash[:opponent] = opponent
-    #   return_hash
-    # end
   end
 end
