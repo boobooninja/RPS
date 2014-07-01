@@ -12,9 +12,8 @@ set :port, 9494
 
 get '/' do
   result = RPS::ValidateSession.run(session)
-  @errors = result[:errors]
-
   if result[:success?]
+    @errors = result[:errors]
     @player = result[:player]
     redirect to "players/#{@player.player_id}"
   else
