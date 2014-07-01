@@ -111,7 +111,9 @@ get '/players/:player_id/matches/:match_id' do |player_id,match_id|
     @match    = @player.get_match(match_id)
     @game     = @match.get_current_game
     @opponent = @match.opponent_for(@player)
-    @score    = RPS::GetScore.run(@match, @player, @opponent)
+    if @opponent
+      @score = RPS::GetScore.run(@match, @player, @opponent)
+    end
     @history  = @match.history
 
     erb :game
