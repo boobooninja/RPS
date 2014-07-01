@@ -37,4 +37,36 @@
     </div>
   </div>
 
+  <% if @match %>
+    <div id="historyModal" class="small reveal-modal" data-reveal>
+      <table>
+        <thead>
+          <tr>
+            <th width='150'class='text-left'>Your Move</th>
+            <th width='50' class='text-center'>Winner? </th>
+            <th width='150'class='text-right'>Opponent Move</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @history.each do |game|%>
+            <% if game.completed? %>
+              <%moves = game.moves %>
+              <% player_move, opponent_move = moves[0].player_id == @player.player_id ? moves : moves.reverse %>
+            <tr>
+              <td width='150'class='text-left'>
+                <%= player_move.action %>
+              </th>
+              <td width='50' class='text-center'>
+                <%= player_move.wins?(opponent_move) %>
+              </th>
+              <td width='150'class='text-right'>
+                <%= opponent_move.action %>
+              </th
+            <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
 <% end %>
