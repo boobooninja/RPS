@@ -166,6 +166,7 @@ post '/api/players/:player_id/matches/:match_id/games/:game_id' do |player_id,ma
   end
 
   JSON(result)
+  redirect to "/players/#{@player.player_id}/matches/#{match_id}"
 end
 
 
@@ -227,6 +228,7 @@ post '/api/players/:player_id/matches' do |player_id|
   end
 
   JSON(json_hash)
+  redirect to "/players/#{@player.player_id}"
 end
 
 get '/matches/:match_id/history' do |match_id|
