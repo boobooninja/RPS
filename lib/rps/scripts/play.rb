@@ -59,7 +59,7 @@ module RPS
 
                   # check if match is over
                   if return_hash[:winner]
-                    match = RPS.db.update('match', ['match_id', match.match_id], {'completed_at' => Time.now})
+                    match = RPS.db.update('matches', ['match_id', match.match_id], {'completed_at' => Time.now})
                     return_hash[:match] = match.to_json_hash
                   else
                     # create a new game

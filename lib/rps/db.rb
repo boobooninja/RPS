@@ -203,6 +203,7 @@ module RPS
         if presult[:completed_at]
           presult[:completed_at] = Time.parse( presult[:completed_at] )
         end
+        presult[:action] = presult[:action].to_sym if presult[:action]
 
         presults << presult
       end
