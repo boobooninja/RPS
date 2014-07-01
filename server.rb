@@ -122,33 +122,6 @@ get '/players/:player_id/matches/:match_id' do |player_id,match_id|
   end
 end
 
-# get '/players/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
-#   result = RPS::ValidateSession.run(session)
-#   @errors = result[:errors]
-
-#   if result[:success?]
-# # TODO refactor
-# # get player, match, game like method above then
-# # have a simple Play script that takes those and
-# # validates the play
-#     result = RPS::Play.run(params)
-#     @errors.push(result[:errors]).flatten!
-
-#     if result[:success]
-#       @player   = result[:player]
-#       @opponent = result[:opponent]
-#       @match    = result[:match]
-#       @game     = result[:game]
-#       @winner   = result[:winner]
-#     end
-
-#     erb :game
-#   else
-#     erb :login
-#   end
-# end
-
-
 #-------- JSON API routes -----------
 
 post '/api/players/:player_id/matches/:match_id/games/:game_id' do |player_id,match_id,game_id|
