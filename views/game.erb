@@ -14,11 +14,13 @@
   </div>
   <div class="columns small-4 text-right">
     <h4 class="subheader">
-      Game: <%= @history.size + 1 %>
-      </br>
-      <small>
-        Started at: <%= @game.started_at %>
-      </small>
+      <% if @game %>
+        Game: <%= @history.size + 1 %></br>
+        <small>Started at: <%= @game.started_at %></small>
+      <% else %>
+        GAME OVER!</br>
+        <small>Completed at: <%= @match.completed_at %></small>
+      <% end %>
     </h4>
   </div>
   <%# Row 2 %>
