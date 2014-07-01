@@ -1,25 +1,24 @@
-<div class="button-bar">
-<ul class="button-group round">
-  <li>
+<ul class="block-grid-3 row">
+  <li class="columns small-4">
     <form action="/api/players/<%= @player.player_id %>/matches/<%= @match.match_id %>/games/<%= @game.game_id %>" method="post">
       <input name="action" type="hidden" value="rock">
-      <button type="submit" class="button large alert">
+      <button type="submit" class="alert panel full-panel">
           </br>ROCK</br></br>
       </button>
     </form>
   </li>
-  <li>
+  <li class="columns small-4">
     <form action="/api/players/<%= @player.player_id %>/matches/<%= @match.match_id %>/games/<%= @game.game_id %>" method="post">
       <input name="action" type="hidden" value="paper">
-      <button type="submit" class="button large alert">
+      <button type="submit" class="alert panel full-panel">
         </br>PAPER</br></br>
       </button>
     </form>
   </li>
-  <li>
+  <li class="columns small-4">
     <form action="/api/players/<%= @player.player_id %>/matches/<%= @match.match_id %>/games/<%= @game.game_id %>" method="post">
       <input name="action" type="hidden" value="scissors">
-      <button type="submit" class="button large alert">
+      <button type="submit" class="alert panel full-panel">
         </br>SCISSORS</br></br>
       </button>
     </form>

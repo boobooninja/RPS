@@ -16,6 +16,18 @@
     text-shadow: -10px 5px black; }
 
 /* line 16, ../scss/rps.sass */
+button.panel {
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  padding: 40px;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  width: 100%;
+  color: #333333;
+  text-weight: bold;
+  font-size: 1.5rem; }
+
+/* line 27, ../scss/rps.sass */
 div.panel {
   -webkit-border-radius: 15px;
   border-radius: 15px;
@@ -23,29 +35,29 @@ div.panel {
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 82.5%; }
-  /* line 23, ../scss/rps.sass */
+  /* line 34, ../scss/rps.sass */
   div.panel.full-panel {
     padding: 3px;
     width: 100%; }
 
 @media all and (max-width: 64rem) {
-  /* line 28, ../scss/rps.sass */
+  /* line 39, ../scss/rps.sass */
   .main {
     max-width: 90%; } }
-/* line 32, ../scss/rps.sass */
+/* line 43, ../scss/rps.sass */
 div.panel.matches ul {
   border-radius: 15px;
   border: none; }
-  /* line 35, ../scss/rps.sass */
+  /* line 46, ../scss/rps.sass */
   div.panel.matches ul .title {
     border-radius: 15px 15px 0 0;
     -webkit-border-radius: 15px 15px 0 0; }
-/* line 38, ../scss/rps.sass */
+/* line 49, ../scss/rps.sass */
 div.panel.matches.your-move {
   background-color: green; }
-/* line 40, ../scss/rps.sass */
+/* line 51, ../scss/rps.sass */
 div.panel.matches.their-move {
   background-color: orange; }
-/* line 42, ../scss/rps.sass */
+/* line 53, ../scss/rps.sass */
 div.panel.matches.button {
   bottom-margin: 3px; }
