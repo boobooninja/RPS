@@ -125,6 +125,28 @@ module RPS
       execute_the(command, sklass)
     end
 
+    def get_match_by(sklass, args)
+      command = "SELECT * FROM matches, playermatches WHERE matches.match_id = playermatches.match_id AND matches.match_id = #{args['match_id']} AND player_id = #{args['player_id']};"
+
+      # unless args.empty?
+      #   command += " WHERE "
+      #   args_ary = [ ]
+      #   args.each do |k,v|
+      #     if v.nil?
+      #       args_ary.push("#{k} IS NULL")
+      #     else
+      #       args_ary.push("#{k} = #{v}")
+      #     end
+      #   end
+
+      #   command += args_ary.join(" AND ")
+      # end
+
+      # command += ";"
+
+      execute_the(command, sklass)
+    end
+
 
     ### UPDATE ###
 
