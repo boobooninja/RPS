@@ -14,7 +14,7 @@
   </div>
   <div class="columns small-4 text-right">
     <h4 class="subheader">
-      <%= "Game: #{@match.games.size + 1}" %>
+      <%= "Game: #{@history.size + 1}" %>
       </br>
       <small>
         <%= "Started at: #{@game.started_at}" %>
@@ -24,12 +24,12 @@
   <%# Row 2 %>
   <div class="columns small-6 text-left">
     <h2 class="subheader">
-      <%= "#{@opponent.name} : #{@opponent.score}" %>
+      <%= "#{@opponent.name} : #{@opponent.score || 0}" %>
     </h2>
   </div>
   <div class="columns small-6 text-right">
     <h2 class="subheader">
-      <%= "#{@player.name} : #{@player.score}" %>
+      <%= "#{@player.name} : #{@player.score || 0}" %>
     </h2>
   </div>
 </div>
