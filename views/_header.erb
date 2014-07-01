@@ -4,7 +4,7 @@
   <div class="columns large-4 large-offset-4 medium-5 medium-offset-1 small-6">
     <%if @player%>
       <h4 class="text-right">
-        <a href="#"><%=@player.username%></a>  :  <a href="#" data-reveal-id="logoutModal">Logout</a>
+          <a href="/players/<%=@player.player_id%>"><%=@player.username%></a>  :  <a href="#" data-reveal-id="logoutModal">Logout</a>
       </h4>
     <%else%>
       <h4 class="text-right">

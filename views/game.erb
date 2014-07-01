@@ -36,19 +36,15 @@
 </br>
 
 <div class="row callout panel" id="gameplay">
-
   <% unless @match.completed_at %>
     <% moves = @game.moves %>
-    <% if moves[0] || moves[0].player_id == @opponent.player_id %>
-      <%= erb :_play_move %>
+    <% if moves[0] && moves[0].player_id == @player.player_id %>
+      <%= erb :_wait_for_opponent %>
     <%# elseif session["#{@match.match_id}".to_sym] == @match.get_current_game %>
     <% else %>
-      <%= erb :_wait_for_opponent %>
+      <%= erb :_play_move %>
     <% end %>
   <%else %>
     <%= erb :_game_over %>
   <% end %>
-    
-
-  <!-- blank div for templating -->
 </div>
