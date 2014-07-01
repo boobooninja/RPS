@@ -24,12 +24,12 @@
   <%# Row 2 %>
   <div class="columns small-6 text-left">
     <h2 class="subheader">
-      <%= "#{@opponent.name || "Waiting for opponent"} : #{@opponent.score || 0}" %>
+      <%= "#{@opponent.name || "Waiting for opponent"} : #{@score[:opponent][:score] || 0}" %>
     </h2>
   </div>
   <div class="columns small-6 text-right">
     <h2 class="subheader">
-      <%= "#{@player.name} : #{@player.score || 0}" %>
+      <%= "#{@player.name} : #{@score[:player][:score] || 0}" %>
     </h2>
   </div>
 </div>
