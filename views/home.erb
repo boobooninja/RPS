@@ -3,10 +3,23 @@
     <div class="panel full-panel your-move matches" data-equalizer-watch>
       <ul class ='pricing-table your-move'>
         <li class='title'>Your turn!</li>
+        <% your_turn_matches = [] %>
+        <% their_turn_matches = [] %>
+        <% completed_matches = [] %>
+
         <% @matches.each do |match| %>
+          <% if match.get_current_game.nil? %>
+            <% completed_matches << match %>
+          <% elsif match.get_current_game.moves[0] && match.get_current_game.moves[0].player_id == @player.player_id %>
+            <% their_turn_matches << match %>
+          <% else %>
+            <% your_turn_matches << match %>
+          <% end %>
+        <% end %>
+        <% your_turn_matches.each do |match| %>
           <li>
             <form action='/players/<%=@player.player_id%>/matches/<%=match.match_id%>' method="get">
-              <button type='submit' class="button expand bullet-item">
+              <button type='submit' class="button expand price">
                 <%= match.opponent_for(@player) ? match.opponent_for(@player).name : "Waiting for opponent" %>
               </button>
             </form>
@@ -26,7 +39,31 @@
     <div class="panel their-move full-panel matches" data-equalizer-watch>
       <ul class ="pricing-table their-move">
         <li class='title'>Their turn!</li>
-        <!-- Their Move Games Here -->
+        <% their_turn_matches.each do |match| %>
+          <li>
+            <form action='/players/<%=@player.player_id%>/matches/<%=match.match_id%>' method="get">
+              <button type='submit' class="button expand price">
+                <%= match.opponent_for(@player) ? match.opponent_for(@player).name : "Waiting for opponent" %>
+              </button>
+            </form>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="columns large-12">
+    <div class="panel no-move full-panel matches">
+      <ul class ="pricing-table no-move">
+        <li class='title'>Completed games</li>
+        <% completed_matches.each do |match| %>
+          <li>
+            <form action='/players/<%=@player.player_id%>/matches/<%=match.match_id%>' method="get">
+              <button type='submit' class="button expand price">
+                <%= match.opponent_for(@player) ? match.opponent_for(@player).name : "Waiting for opponent" %>
+              </button>
+            </form>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
