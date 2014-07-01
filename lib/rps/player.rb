@@ -35,7 +35,7 @@ module RPS
     end
 
     def moves_for_game(game_id)
-      @moves ||= RPS.db.find('moves',{'game_id' => game_id})
+      @moves ||= RPS.db.find('moves',{'game_id' => game_id, 'player_id' => @player_id})
     end
 
     def score
