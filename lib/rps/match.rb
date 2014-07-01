@@ -41,6 +41,14 @@ module RPS
       RPS.db.find('games',{'match_id' => @match_id, 'completed_at' => nil}).first
     end
 
+    def history
+      history_array = [ ]
+      self.games.collect do |g|
+        history_array.push( g ) if g.completed_at == nil
+      end
+      history_array
+    end
+
     def to_json_hash
       {:match_id => @match_id, :started_at => @started_at, :completed_at => @completed_at}
     end

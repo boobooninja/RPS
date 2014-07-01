@@ -73,7 +73,7 @@ end
 
 get '/logout' do
   session.clear
-  
+
   result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
@@ -112,6 +112,7 @@ get '/players/:player_id/matches/:match_id' do |player_id,match_id|
     @game     = @match.get_current_game
     @opponent = @match.opponent_for(@player)
     @score    = RPS::GetScore.run(@match, @player, @opponent)
+    @history  = @match.history
 
     erb :game
   else

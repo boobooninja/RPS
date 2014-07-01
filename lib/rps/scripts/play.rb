@@ -31,43 +31,46 @@ module RPS
           if players_moves.empty?
             # create move
             if create_move(game, player, action, return_hash)
-              # update game
-              game = RPS.db.update('games', ['game_id', game.game_id], {'completed_at' => Time.now}).first
-              if game
-                # return_hash[:game] = game
-                # check winner
-                games = RPS.db.find('games',{'match_id' => match.match_id})
-                # get updated games
+              # check to see if game is over and update
+              if game.moves.length == 2
+                game = RPS.db.update('games', ['game_id', game.game_id], {'completed_at' => Time.now}).first
 
-                return_hash[:games] = []
-                games.each do |game|
-                  game_hash = game.to_json_hash
+                if game
+                  # check winner
+                  games = RPS.db.find('games',{'match_id' => match.match_id})
+                  # get updated games
 
-                  game_hash[:moves] = []
-                  game.moves.each do |move|
-                    game_hash[:moves].push(move.to_json_hash)
+                  return_hash[:games] = []
+                  games.each do |game|
+                    game_hash = game.to_json_hash
+
+                    game_hash[:moves] = []
+                    game.moves.each do |move|
+                      game_hash[:moves].push(move.to_json_hash)
+                    end
+
+                    return_hash[:games].push(game_hash)
                   end
+                  # return_hash[:games] = games
 
-                  return_hash[:games].push(game_hash)
-                end
-                # return_hash[:games] = games
+                  # get_score_for(games, player, opponent, return_hash)
+                  score_hash = RPS::GetScore.run(match, player, opponent, games)
+                  return_hash.merge!(score_hash)
 
-                # get_score_for(games, player, opponent, return_hash)
-                score_hash = RPS::GetScore.run(match, player, opponent, games)
-                return_hash.merge!(score_hash)
-
-                # check if match is over
-                if return_hash[:winner]
-                  match = RPS.db.update('match', ['match_id', match.match_id], {'completed_at' => Time.now})
-                  return_hash[:match] = match.to_json_hash
+                  # check if match is over
+                  if return_hash[:winner]
+                    match = RPS.db.update('match', ['match_id', match.match_id], {'completed_at' => Time.now})
+                    return_hash[:match] = match.to_json_hash
+                  else
+                    # create a new game
+                    new_game = RPS.db.create('games', {'match_id' => match.match_id}).first
+                    return_hash[:game] = new_game.to_json_hash
+                  end
+                  return_hash
                 else
-                  # create a new game
-                  new_game = RPS.db.create('games', {'match_id' => match.match_id}).first
-                  return_hash[:game] = new_game.to_json_hash
+                  return_hash[:errors].push('unable to update game')
                 end
-                return_hash
-              else
-                return_hash[:errors].push('unable to update game')
+
               end
             else
               return_hash[:errors].push('unable to create move')
