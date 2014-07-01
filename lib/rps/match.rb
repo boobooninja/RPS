@@ -44,7 +44,7 @@ module RPS
     def history
       history_array = [ ]
       self.games.collect do |g|
-        history_array.push( g ) if g.completed_at == nil
+        history_array.push( g ) unless g.completed_at == nil
       end
       history_array
     end
