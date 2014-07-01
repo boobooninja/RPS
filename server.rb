@@ -73,18 +73,20 @@ post '/login' do
 end
 
 get '/logout' do
+  session.clear
+  
   result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
-  session.clear
   erb :index
 end
 
 post '/logout' do
+  session.clear
+
   result = RPS::DeleteSession.run(session)
   @errors = result[:errors]
 
-  session.clear
   erb :index
 end
 
