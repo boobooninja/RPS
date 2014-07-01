@@ -13,6 +13,7 @@ module RPS
       # matches = RPS.db.find('matches, playermatches',{'player_id' => player.id})
 
       # get match
+      match = nil
       matches.each do |m|
         match = m if m.match_id == match_id
       end
@@ -21,6 +22,7 @@ module RPS
         return_hash[:match] = match.to_json_hash
 
         # get opponent
+        opponent = nil
         match.players.each do |p|
           opponent = p if p.player_id != player.player_id
         end
@@ -34,6 +36,7 @@ module RPS
         # games = RPS.db.find('games',{'match_id' => match.id})
 
         # get game
+        game = nil
         games.each do |g|
           game = g if g.game_id == game_id
         end
