@@ -153,7 +153,7 @@ post '/api/players/:player_id/matches/:match_id/games/:game_id' do |player_id,ma
   @player = result[:player]
 
   if result[:success?]
-    play_hash = {:player => player, :match_id => match_id, :game_id => game_id, :action => params[:action]}
+    play_hash = {:player => @player, :match_id => match_id, :game_id => game_id, :action => params[:action]}
     result = RPS::Play.run(play_hash)
 
     result[:errors].push(@errors).flatten!
