@@ -11,18 +11,10 @@
     //   bl.addJokeToLocalJokes(newId, joke, answer);
     // });
 
-    $(document).on('click', '.employee-listing', function() {
-      var id = $(this).find('.id').val();
-      // render employee view
-      console.log("Employee ID: " + id);
+    $('.waiting') function() {
+      setTimeout(location.reload(true),15000);
+      console.log("reloading");
     });
-
-    $(document).on('hover', '.employee-listing', function() {
-      $(this).css('cursor', 'pointer');
-    });
-
-
-  };
 
   // this runs it
   window.presentationUI = new PresentationUI();
